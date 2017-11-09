@@ -4,7 +4,7 @@
 class User extends Main
 {
     protected $name;
-    protected $payments = [];
+    protected $payment = [];
     protected $interval = [];
 
     /**
@@ -22,15 +22,12 @@ class User extends Main
     }
 
     /**
-     * GetPayents
-     * @return Price
+     * setName
      */
     public function name (string $name)
     {
         $this->name = $name;
         return $this;
     }
-
-
 
 }

@@ -1,17 +1,12 @@
 <?php
 
-require_once 'classes/class.user.php';
-require_once 'classes/class.price.php';
-require_once 'classes/class.tarif.php';
-require_once 'classes/class.interval.php';
-require_once 'classes/class.payment.php';
-
 const classes = [
     'interval',
     'payment',
     'price',
     'tarif',
-    'user'
+    'user',
+    'date',
 ];
 
 foreach (classes as $class) {
@@ -20,49 +15,78 @@ foreach (classes as $class) {
 
 class Main
 {
-
-
-
-    public function __call ($method, $param = null)
+    
+    function __construct($param = null) {
+        if($param != null && !is_object($param)) {
+            $this->set($param);
+        }
+    }
+    
+    /**
+     * Get method called
+     * @param  string $method method name
+     * @param  [type] $param  [description]
+     * @return [type]         [description]
+     */
+    public function __call ($method, $param)
     {
-
-        // $method = $this->getCalledMethod();
         $className = array_map('ucfirst', array_filter(classes, function ($a) use ($method) {
             return strtolower($method) == $a;
         }));
 
-        if (is_array($className)) {
-            $className = array_values($className)[0];
-        }
+        $className = self::arrayOut($className);
+        $param = self::arrayOut($param);
+        
         return $this->call($className, $method, $param);
     }
 
-    private function getCalledMethod () {
-        $trace  = debug_backtrace();
-        $caller = $trace[1];
-        return $caller['function'];
+    
+    public static function arrayOut($value) 
+    {
+        if (is_array($value)) {
+            $value = array_values($value)[0];
+        }
+        
+        return $value;
+    }
+    
+    
+    public function set ($value) 
+    {
+        $var = strtolower(get_called_class());
+        $this->$var = $value;
+        
+        return $this;
+    }
+    
+    public function get () 
+    {
+        $var = strtolower(get_class());
+        return $this->$var;
     }
 
-    private function call($class, $method, $param) {
+    private function call ($class, $var, $param)
+    {
+        
         if (is_object($param) && get_class($param) == $class) {
             $Obj = $param;
         } else {
-
-            $Obj = new $class();
+            $Obj = new $class($param);
         }
 
-        if (isset($this->$method) && is_array($this->$method)) {
-            $this->$method[] = $Obj;
+        if (isset($this->$var) && is_array($this->$var)) {
+             $this->$var[] = $Obj;
         } else {
-            $this->$method = $Obj;
+            $this->$var = $Obj;
         }
+        
 
         return $this;
     }
 
     public function date ($param, $var = 'date')
     {
-        $this->call('DateTime', $var, $param);
+        $this->call('Date', $var, $param);
         return $this;
     }
 

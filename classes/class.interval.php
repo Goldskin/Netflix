@@ -1,21 +1,23 @@
-<?php /**
- *
- */
+<?php 
 class Interval extends Main
 {
-    protected $start = null;
-    protected $end = null;
-
-
-    function start ($date)
+    /**
+     * Add starting date
+     * @param  string|Date $date Starting date
+     * return Class 
+     */
+    public function start ($date)
     {
         return $this->date($date, 'start');
     }
-
-    function end ($date)
+    
+    /**
+     * Add ending date
+     * @param  string|Date $date Starting date
+     * return Class 
+     */
+    public function end ($date)
     {
         return $this->date($date, 'end');
     }
-
-
 }
