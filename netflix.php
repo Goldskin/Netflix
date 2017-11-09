@@ -1,13 +1,18 @@
-<?php 
+<?php
+ini_set('xdebug.var_display_max_depth', 5);
+ini_set('xdebug.var_display_max_children', 256);
+ini_set('xdebug.var_display_max_data', 1024);
+
+require_once 'class.main.php';
 $debut = new DateTime('2017-07-28');
 $today = new DateTime();
-require_once 'class.personne.php';
-
-new Personne($debut);
 
 $loutres = [
     'Charles' => [
-        'start' => new Personne($debut)
+        'use' => [
+            [$debut, '2017-12-28'],
+            [$debut]
+        ]
     ],
     'Régis' => [
         'start' => $debut,
@@ -20,130 +25,30 @@ $loutres = [
     ]
 ];
 
-$totalMonthDate = $debut->diff($today);
-$totalMonth     = $totalMonthDate->format('%r%m') + $totalMonthDate->format('%r%y') * 12;
-$prixNetflix    = 11.99;
-$prixPaye       = $totalMonth * $prixNetflix;
-$views          = [];
+$users = [];
+foreach ($loutres as $name => $data) {
+    $User = (new User())->name($name);
 
-
-$personnesParMois = [];
-$prixParMois = [];
-
-
-for ($currentMonth = 1; $currentMonth <= $totalMonth; $currentMonth++) {
-    
-    $dateCurrent = clone $debut;
-    $dateCurrent->modify('+' . $currentMonth . ' month');
-    $prixParMois[$currentMonth]['people'] = 0;
-    
-    // tri de prix par mois
-    foreach ($loutres as $nom => $loutre) {
-        $since = $loutre['start']->diff($dateCurrent);
-        if (($total = $since->format('%r%m') + $since->format('%r%y') * 12) > 0) {
-            if (!isset($loutres[$nom]['since'])) {
-                $loutres[$nom]['since'] = 0;
-            }
-            $loutres[$nom]['since']++;
-            $personnesParMois[$currentMonth][] = $nom;
-            $prixParMois[$currentMonth]['people']++;
+    // determine les utilisations
+    if (isset($data['use'])) {
+        foreach ($data['use'] as $use) {
+            $Interval = (new Interval)->start($use[0]);
+            if (isset($use[1])) $Interval->end($use[1]);
+            $User->interval($Interval);
         }
     }
-    
-    // ajout de prix par personnes
-    foreach ($loutres as $nom => $loutre) {
-        $since = $loutre['start']->diff($dateCurrent);
-        if (($total = $since->format('%r%m') + $since->format('%r%y') * 12) > 0) {
-            if (!isset($loutres[$nom]['total'])) {
-                $loutres[$nom]['total'] = 0;
-            }
-            $loutres[$nom]['total'] += $prixNetflix / $prixParMois[$currentMonth]['people'];
+
+    // determine les utilisations
+    if (isset($data['payed'])) {
+        foreach ($data['payed'] as $date => $payed) {
+            $Payment = (new Payment)->price($payed)->date($date);
+            $User->payment($Payment);
         }
     }
-    
+    $users[] = $User;
 }
 
-
-foreach ($loutres as $nom => $loutre) {
-    if (isset($loutre['since'])) {
-        $avance = $paye = $restant = $avance = 0;
-        
-        // total payé
-        if (isset($loutre['payed'])) {
-            foreach ($loutre['payed'] as $date => $prix) {
-                $loutres[$nom]['total'] -= $prix;
-                $paye += $prix;
-            }
-        }
-        
-        // total restant Ã  payé si le prix est positif
-        if ($loutres[$nom]['total'] >= 0) {
-            $restant = abs($loutres[$nom]['total']);
-        } else {
-            // total avance si le prix payé est positif
-            $avance = abs($loutres[$nom]['total']);
-        }
-        
-        $views[] = [
-            'nom' => $nom,
-            'payed' => number_format($paye, 2),
-            'restant' => number_format($restant, 2),
-            'avance' => number_format($avance, 2)
-        ];
-    }
-    
-}
-
-?><!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Netflix</title>
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css">
-        <style media="screen">
-            img {
-                max-width: 400px;
-                display: block;
-                margin: 50px auto;
-            }
-            h1 {
-                font-size: 2rem;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body class="container">
-        <div class="row">
-            <div class="columns">
-                <img src="https://cdn.worldvectorlogo.com/logos/netflix-2.svg" alt="Netflix">
-            </div>
-            <div class="columns">
-                <h1>Total de mois payés : <?= $totalMonth ?></h1>
-            </div>
-            <div class="columns">
-                <table class="table ">
-                    <thead class="thead-inverse">
-                        <tr>
-                            <th>Personnes</th>
-                            <th>Payé</th>
-                            <th>Restant Ã  payer</th>
-                            <th>Avance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($views as $key => $view): ?>
-                            <tr>
-                                <td><?= $view['nom'] ?></td>
-                                <td><?= $view['payed'] ?></td>
-                                <td><?= $view['restant'] ?></td>
-                                <td><?= $view['avance'] ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-    </body>
-</html>
+$netflix = [
+    (new Tarif)->price(11.99)->interval( (new Interval)->End('2018-11-24') ),
+    (new Tarif)->price(13.99)->interval( (new Interval)->Start('2018-11-25') )
+];
