@@ -31,10 +31,12 @@ foreach ($loutres as $data) {
     $users[] = $User;
 }
 
-$netflix = [
-    (new Tarif ())->price( 11.99 )->interval( (new Interval ())->end('2018-11-24') ),
-    (new Tarif ())->price( 13.99 )->interval( (new Interval ())->start('2018-11-25') )
-];
-
-echo '<pre>', var_dump( $users ), '</pre>';
-echo '<pre>', var_dump( $netflix ), '</pre>';
+$file = file_get_contents('./price.json');
+$prices = json_decode($file);
+$netflix = [];
+foreach ($prices as $data) {
+    $Interval = (new Interval ())->start($data->use[0]);
+    if (isset($data->use[1])) $Interval->end($data->use[1]);
+    $tarif = (new Tarif ())->price( $data->price )->interval( $Interval );
+    $netflix[] = $tarif;
+}

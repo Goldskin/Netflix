@@ -1,11 +1,6 @@
 <?php
 
 
-$debut = new DateTime('2017-07-28');
-$today = new DateTime();
-
-
-
 // old
 
  $debut = new DateTime('2017-07-28');
