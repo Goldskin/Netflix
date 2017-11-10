@@ -7,6 +7,7 @@ const classes = [
     'tarif',
     'user',
     'date',
+    'service',
 ];
 
 foreach (classes as $class) {
@@ -41,54 +42,87 @@ class Main
     }
 
 
+    /**
+     * if the array contains one element, extract it
+     * @param  mixed $value parametres
+     * @return mixed        cleaned parametres
+     */
     public static function arrayOut($value)
     {
-        if (count($value) == 0) {
-            return $value;
-        }
-        if (is_array($value)) {
+        if (is_array($value) && count($value) == 1) {
             $value = array_values($value)[0];
         }
 
         return $value;
     }
 
-
-    public function set ($value)
+    /**
+     * set value
+     * @param [type] $value [description]
+     */
+    public function set ($value, $var = null)
     {
-        $var = strtolower(get_called_class());
-        $this->$var = $value;
-
+        $var = $this->className($var);
+        
+        if (isset($this->$var) && !is_array($this->$var)) {
+            $this->$var = [$this->$var, $value];
+        } else if (isset($this->$var) && is_array($this->$var)) {
+            $this->$var[] = $value;
+        } else {
+            $this->$var = $value;
+        }
+        
         return $this;
     }
 
-    public function get ()
+    /**
+     * get dynamic value from class 
+     * @return string
+     */
+    public function get ($var = null)
     {
-        $var = strtolower(get_class());
+        $var = $this->className($var);
         return $this->$var;
     }
+    
+    /**
+     * get called className if $value is null
+     * @param  mixed $value called clas name
+     * @return string       class name
+     */
+    public function className ($value = null) 
+    {
+        return is_null($value) ? strtolower(get_called_class()) : $value;
+    }
 
-    private function call ($class, $var, $param)
+    /**
+     * call the right class
+     * @param  string $class [description]
+     * @param  string $var   [description]
+     * @param  mixed $param [description]
+     * @return funtion     [description]
+     */
+    private function call ($class, $var, $param = null)
     {
         if ($param == null) {
-            return $this->$var;
+            return $this->get();
         }
+        
         if (is_object($param) && get_class($param) == $class) {
             $Obj = $param;
         } else {
             $Obj = new $class($param);
         }
 
-        if (isset($this->$var) && is_array($this->$var)) {
-             $this->$var[] = $Obj;
-        } else {
-            $this->$var = $Obj;
-        }
-
-
-        return $this;
+        return $this->set($Obj, $var);
     }
 
+    /**
+     * specifique behevior
+     * @param  array $param parameters
+     * @param  string $var  var name
+     * @return [type]        [description]
+     */
     public function date ($param, $var = 'date')
     {
         $this->call('Date', $var, $param);

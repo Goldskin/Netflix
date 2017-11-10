@@ -5,38 +5,43 @@ ini_set('xdebug.var_display_max_data', 1024);
 
 require_once 'class.main.php';
 
-$file = file_get_contents('./data.json');
+$file = file_get_contents('./user.json');
 $loutres = json_decode($file);
+$file = file_get_contents('./price.json');
+$prices = json_decode($file);
 
 
-$users = [];
-foreach ($loutres as $data) {
-    $User = (new User ())->name($data->name);
+$Netflix = new Service ();
+foreach ($loutres as $Data) {
+    
+    $User = (new User ())->name($Data->name);
 
     // determine les utilisations
-    if (isset($data->use)) {
-        foreach ($data->use as $use) {
-            $Interval = (new Interval ())->start($use[0]);
-            if (isset($use[1])) $Interval->end($use[1]);
+    if (isset($Data->use)) {
+        foreach ($Data->use as $Use) {
+            $Interval = (new Interval ())->start( $Use->start );
+            if (isset($Use->end)) $Interval->end( $Use->end );
             $User->interval($Interval);
         }
     }
 
     // determine les utilisations
-    if (isset($data->payed)) {
-        foreach ($data->payed as $payed) {
-            $User->payment( (new Payment ())->price($payed[0])->date($payed[1]) );
+    if (isset($Data->payed)) {
+        foreach ($Data->payed as $Payment) {
+            $User->payment( (new Payment ())->price( $Payment->price )->date( $Payment->date ) );
         }
     }
-    $users[] = $User;
+    
+    // $users[] = $User;
+    $Netflix->user($User);
 }
 
-$file = file_get_contents('./price.json');
-$prices = json_decode($file);
-$netflix = [];
-foreach ($prices as $data) {
-    $Interval = (new Interval ())->start($data->use[0]);
-    if (isset($data->use[1])) $Interval->end($data->use[1]);
-    $tarif = (new Tarif ())->price( $data->price )->interval( $Interval );
-    $netflix[] = $tarif;
+
+foreach ($prices as $Data) {
+    $Interval = (new Interval ())->start($Data->start);
+    if (isset($Data->end)) $Interval->end($Data->end);
+    $Tarif = (new Tarif ())->price( $Data->price )->interval( $Interval );
+    $Netflix->tarif($Tarif);
 }
+
+echo '<pre>', var_dump( $Netflix ), '</pre>';

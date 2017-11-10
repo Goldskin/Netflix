@@ -5,8 +5,6 @@ class User extends Main
 {
 
     protected $name;
-    protected $payment = [];
-    public $interval = [];
 
     /**
      * GetPayents
