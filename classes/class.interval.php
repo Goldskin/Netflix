@@ -21,7 +21,6 @@ class Interval extends Main
         return $this->date($date, 'end');
     }
 
-
     public function getMonth () {
         $start = !isset($this->start) ? new Date () : clone $this->start;
         $end   = !isset($this->end) ? new Date () : clone $this->end;
@@ -31,7 +30,7 @@ class Interval extends Main
 
         return $total;
     }
-    
+
     public function getDays () {
         $start = !isset($this->start) ? new Date () : clone $this->start;
         $end   = !isset($this->end) ? new Date () : clone $this->end;

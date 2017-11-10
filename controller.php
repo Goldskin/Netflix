@@ -5,13 +5,13 @@ require_once 'class.main.php';
  * @return Service get netflix
  */
 function controller (Service $Service) {
-    
+
     $Start = $Service->getStart();
     $Interval = (new Interval ())->start( $Start);
-    
-    
+
+
     for ($currentMonth = 1; $currentMonth <= $Interval->getMonth(); $currentMonth++) {
-    
+
         $dateCurrent = clone $Start;
         $dateCurrent->modify('+' . $currentMonth . ' month');
         $prixParMois[$currentMonth]['people'] = 0;
@@ -39,11 +39,11 @@ function controller (Service $Service) {
         //         $loutres[$nom]['total'] += $prixNetflix / $prixParMois[$currentMonth]['people'];
         //     }
         // }
-    
+
     }
     echo '<pre>', var_dump( $currentMonth ), '</pre>';
-    
-    
+
+
     // foreach ($loutres as $nom => $loutre) {
     //     if (isset($loutre['since'])) {
     //         $avance = $paye = $restant = $avance = 0;

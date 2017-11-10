@@ -63,7 +63,7 @@ class Main
     public function set ($value, $var = null)
     {
         $var = $this->className($var);
-        
+
         if (isset($this->$var) && !is_array($this->$var)) {
             $this->$var = [$this->$var, $value];
         } else if (isset($this->$var) && is_array($this->$var)) {
@@ -71,7 +71,7 @@ class Main
         } else {
             $this->$var = $value;
         }
-        
+
         return $this;
     }
 
@@ -84,7 +84,7 @@ class Main
         $var = $this->className($var);
         return $this->$var;
     }
-    
+
     /**
      * get called className if $value is null
      * @param  mixed $value called clas name
@@ -107,7 +107,7 @@ class Main
         if ($param == null) {
             return $this->get($var);
         }
-        
+
         if (is_object($param) && get_class($param) == $class) {
             $Obj = $param;
         } else {
