@@ -6,7 +6,7 @@ class Interval extends Main
      * @param  string|Date $date Starting date
      * return Class
      */
-    public function start ($date)
+    public function start ($date = null)
     {
         return $this->date($date, 'start');
     }
@@ -16,7 +16,7 @@ class Interval extends Main
      * @param  string|Date $date Starting date
      * return Class
      */
-    public function end ($date)
+    public function end ($date = null)
     {
         return $this->date($date, 'end');
     }
@@ -24,10 +24,20 @@ class Interval extends Main
 
     public function getMonth () {
         $start = !isset($this->start) ? new Date () : clone $this->start;
-        $end = !isset($this->end) ? new Date () : clone $this->end;
+        $end   = !isset($this->end) ? new Date () : clone $this->end;
 
-        $date = $start->diff($end);
-        $total     = $date->format('%r%m') + $date->format('%r%y') * 12;
+        $date  = $start->diff($end);
+        $total = $date->format('%r%m') + $date->format('%r%y') * 12;
+
+        return $total;
+    }
+    
+    public function getDays () {
+        $start = !isset($this->start) ? new Date () : clone $this->start;
+        $end   = !isset($this->end) ? new Date () : clone $this->end;
+
+        $date  = $start->diff($end);
+        $total = $date->days;
 
         return $total;
     }

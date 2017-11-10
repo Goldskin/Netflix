@@ -4,8 +4,6 @@
 class User extends Main
 {
 
-    protected $name;
-
     /**
      * GetPayents
      * @return Price
@@ -25,7 +23,8 @@ class User extends Main
      */
     public function name (string $name)
     {
-        $this->name = $name;
+        // $this->name = $name;
+        $this->set($name, 'name');
         return $this;
     }
 

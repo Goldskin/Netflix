@@ -76,7 +76,7 @@ class Main
     }
 
     /**
-     * get dynamic value from class 
+     * get dynamic value from class
      * @return string
      */
     public function get ($var = null)
@@ -90,7 +90,7 @@ class Main
      * @param  mixed $value called clas name
      * @return string       class name
      */
-    public function className ($value = null) 
+    protected function className ($value = null)
     {
         return is_null($value) ? strtolower(get_called_class()) : $value;
     }
@@ -105,7 +105,7 @@ class Main
     private function call ($class, $var, $param = null)
     {
         if ($param == null) {
-            return $this->get();
+            return $this->get($var);
         }
         
         if (is_object($param) && get_class($param) == $class) {
@@ -121,10 +121,12 @@ class Main
      * specifique behevior
      * @param  array $param parameters
      * @param  string $var  var name
-     * @return [type]        [description]
      */
-    public function date ($param, $var = 'date')
+    public function date ($param = null, $var = 'date')
     {
+        if ($param == null) {
+            return $this->get($var);
+        }
         $this->call('Date', $var, $param);
         return $this;
     }
