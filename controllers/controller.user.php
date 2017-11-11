@@ -1,6 +1,7 @@
 <?php
 require_once MODELS_ROOT . '/model.service.php';
 require_once CONTROLLERS_ROOT . '/controller.service.php';
+require_once CONTROLLERS_ROOT . '/controller.view.php';
 
 $Netflix = model ();
 $Netflix = controller($Netflix);
@@ -12,9 +13,9 @@ $bills = [];
 $name = $_GET['user'];
 $User = $Netflix->getUser($name);
 
-Main::each($User->bill(), function ($Bill) use ($bills) {
+Main::each($User->bill(), function ($Bill) use (&$bills) {
     $bills[] = [
-        'price' => $Bill->get(),
+        'price' => $Bill->format(),
         'date' => $Bill->date()->format('d/m/Y')
     ];
 });
@@ -27,4 +28,4 @@ $views[] = [
 ];
 
 
-require_once VIEWS_ROOT . '/view.user.php';
+return view('user', $views);
