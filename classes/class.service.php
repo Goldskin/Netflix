@@ -30,10 +30,13 @@ class Service extends Main
      * @return User
      */
     public function getUser ($name) {
-        foreach ($this->user() as $key => $user) {
-            if (strtolower($user->name()) == strtolower($name)) {
-                return $user;
+        $return = null;
+        Self::each($this->user(), function ($User) use (&$return, $name) {
+            if (strtolower($User->name()->get()) == strtolower($name)) {
+                $return = $User;
+                return;
             }
-        }
+        });
+        return $return;
     }
 }

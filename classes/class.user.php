@@ -1,6 +1,5 @@
-<?php /**
- *
- */
+<?php
+
 class User extends Main
 {
 
@@ -31,7 +30,7 @@ class User extends Main
         $Prices = new Price();
 
         Self::each($Objs, function ($Obj) use (&$Prices) {
-            $Prices->set($Obj->price()->get());
+            $Prices->set($Obj->get());
         });
 
         return $Prices->total();
@@ -41,20 +40,23 @@ class User extends Main
     public function update () {
         if ($this->getBills() > 0) {
             if ($this->admin()) {
-                $this->payment( (new Payment ())->price( $this->getBills() ) );
-            }
-            if ($this->payment()) {
+                $this->payed( (new Price ())->set( $this->getBills() ) );
+            } else if ($this->payment()) {
+
+                $this->payed( (new Price ())->set( $this->getPayments() ) );
                 $avance  = $this->getPayments() - $this->getBills();
                 $avance  = $avance > 0 ? $avance : 0;
                 $unpayed = $this->getBills() - $this->getPayments();
                 $unpayed = $unpayed > 0 ? $unpayed : 0;
 
-                $this->unpayed( (new Unpayed ())->price($unpayed) );
+                if ($unpayed > 0) {
+                    $this->unpayed( (new Price ())->set($unpayed) );
+                }
                 if ($avance > 0) {
-                    $this->advance( (new Advance ())->price($avance) );
+                    $this->advance( (new Price ())->set($avance) );
                 }
             } else {
-                $this->unpayed( (new Unpayed ())->price($this->getBills()) );
+                $this->unpayed( (new Price ())->set($this->getBills()) );
             }
         }
     }

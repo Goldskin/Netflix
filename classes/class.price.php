@@ -16,4 +16,8 @@ class Price extends Main
         return $val;
     }
 
+    public function format ($currency = '&euro;') {
+        return number_format ( $this->get() , 2 ,  "," ," " ) . $currency;
+    }
+
 }

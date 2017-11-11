@@ -32,19 +32,17 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        <?php Main::each($Netflix->user(), function ($User) { ?>
+                        <?php foreach ($views as $key => $view) : ?>
                             <tr>
-                                <td><?= is_null($User->name()->get()) ?'': $User->name()->get() ?></td>
-                                <td><?= is_null($User->getPayments()) ?'': $User->getPayments() ?></td>
-                                <td><?= is_null($User->unpayed()) ?'': $User->unpayed()->price()->get() ?></td>
-                                <td><?= is_null($User->advance()) ?'': $User->advance()->price()->get()  ?></td>
+                                <td><?= $view['name'] ?></td>
+                                <td><?= $view['payed'] ?></td>
+                                <td><?= $view['unpayed'] ?></td>
+                                <td><?= $view['advance']  ?></td>
                             </tr>
-                        <?php }); ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-
     </body>
 </html>

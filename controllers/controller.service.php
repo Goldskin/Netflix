@@ -1,5 +1,5 @@
 <?php
-require_once 'class.main.php';
+require_once CLASSES_ROOT . '/class.main.php';
 /**
  * get model
  * @return Service get netflix
@@ -18,12 +18,12 @@ function controller (Service $Service) {
         $currentTarif = null;
 
         // Calc right price for current month
-        Main::each($Service->tarif(), function ($Tarif) use (&$currentTarif, $dateCurrent)
+        Main::each($Service->price(), function ($Price) use (&$currentTarif, $dateCurrent)
         {
-            Main::each($Tarif->interval(), function ($Interval) use (&$currentTarif, $Tarif, $dateCurrent)
+            Main::each($Price->interval(), function ($Interval) use (&$currentTarif, $Price, $dateCurrent)
             {
                 if ($Interval->between($dateCurrent)) {
-                    return ($currentTarif = $Tarif);
+                    return ($currentTarif = $Price);
                 }
             });
         });
@@ -40,7 +40,9 @@ function controller (Service $Service) {
             });
         });
 
-        $billPrice = $currentTarif->price()->get() / $totalUser;
+
+        // split price
+        $billPrice = $currentTarif->get() / $totalUser;
 
         // Applying bill
         Main::each($Service->user(), function ($User) use ($billPrice, $dateCurrent)
@@ -49,7 +51,7 @@ function controller (Service $Service) {
             {
                 if ($Interval->between($dateCurrent)) {
                     $date = clone $dateCurrent;
-                    $User->bill( (new Bill ())->price($billPrice)->date($date) );
+                    $User->bill( (new Price ())->set($billPrice)->date($date) );
                 }
             });
         });

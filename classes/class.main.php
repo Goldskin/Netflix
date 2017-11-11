@@ -2,21 +2,14 @@
 
 const classes = [
     'interval',
-    'payment',
     'price',
-    'tarif',
     'user',
     'date',
-    'service',
-    'bill',
-    'name',
-    'advance',
-    'admin',
-    'unpayed'
+    'service'
 ];
 
 foreach (classes as $class) {
-    require_once "classes/class.$class.php";
+    require_once CLASSES_ROOT . "./class.$class.php";
 }
 
 class Main
@@ -36,13 +29,9 @@ class Main
      */
     public function __call ($method, $param)
     {
-        $className = array_map('ucfirst', array_filter(classes, function ($a) use ($method) {
-            return strtolower($method) == $a;
-        }));
-
-        $className = self::arrayOut($className);
+        $className = ucfirst(strtolower($method));
+        // $className = self::arrayOut($className);
         $param = self::arrayOut($param);
-
         return $this->call($className, $method, $param);
     }
 
@@ -76,6 +65,20 @@ class Main
             $this->$var[] = $value;
         } else {
             $this->$var = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * reset data value
+     */
+    public function reset ()
+    {
+        $var = $this->className($var);
+
+        if (isset($this->$var) && !is_array($this->$var)) {
+            unset($this->$var);
         }
 
         return $this;
@@ -119,10 +122,13 @@ class Main
             return $this->get($var);
         }
 
-        if (is_object($param) && get_class($param) == $class) {
+        if (is_object($param)) {
             $Obj = $param;
+        } else if (class_exists($class)) {
+            $Obj = new $class ($param);
         } else {
-            $Obj = new $class($param);
+
+            $Obj = new Self ($param);
         }
 
         return $this->set($Obj, $var);
