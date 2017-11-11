@@ -62,7 +62,7 @@ class Main
         if (isset($this->$var) && !is_array($this->$var)) {
             $this->$var = [$this->$var, $value];
         } else if (isset($this->$var) && is_array($this->$var)) {
-            $this->$var[] = $value;
+            $this->{$var}[] = $value;
         } else {
             $this->$var = $value;
         }
