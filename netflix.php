@@ -8,4 +8,7 @@ require_once 'model.php';
 require_once 'controller.php';
 
 $Netflix = model ();
-controller($Netflix);
+$Netflix = controller($Netflix);
+
+require_once './view.php';
+

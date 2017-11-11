@@ -7,70 +7,60 @@ require_once 'class.main.php';
 function controller (Service $Service) {
 
     $Start = $Service->getStart();
-    $Interval = (new Interval ())->start( $Start);
+    $Duration = (new Interval ())->start($Start);
 
 
-    for ($currentMonth = 1; $currentMonth <= $Interval->getMonth(); $currentMonth++) {
+    for ($currentMonth = 1; $currentMonth <= $Duration->month(); $currentMonth++) {
 
-        $dateCurrent = clone $Start;
+        $dateCurrent  = clone $Start;
         $dateCurrent->modify('+' . $currentMonth . ' month');
-        $prixParMois[$currentMonth]['people'] = 0;
+        $totalUser    = 0;
+        $currentTarif = null;
 
-        // // tri de prix par mois
-        foreach ($loutres as $nom => $loutre) {
-            $since = $loutre['start']->diff($dateCurrent);
-            if (($total = $since->format('%r%m') + $since->format('%r%y') * 12) > 0) {
-                if (!isset($loutres[$nom]['since'])) {
-                    $loutres[$nom]['since'] = 0;
+        // Calc right price for current month
+        Main::each($Service->tarif(), function ($Tarif) use (&$currentTarif, $dateCurrent)
+        {
+            Main::each($Tarif->interval(), function ($Interval) use (&$currentTarif, $Tarif, $dateCurrent)
+            {
+                if ($Interval->between($dateCurrent)) {
+                    return ($currentTarif = $Tarif);
                 }
-                $loutres[$nom]['since']++;
-                $personnesParMois[$currentMonth][] = $nom;
-                $prixParMois[$currentMonth]['people']++;
-            }
-        }
+            });
+        });
 
-        // // ajout de prix par personnes
-        // foreach ($loutres as $nom => $loutre) {
-        //     $since = $loutre['start']->diff($dateCurrent);
-        //     if (($total = $since->format('%r%m') + $since->format('%r%y') * 12) > 0) {
-        //         if (!isset($loutres[$nom]['total'])) {
-        //             $loutres[$nom]['total'] = 0;
-        //         }
-        //         $loutres[$nom]['total'] += $prixNetflix / $prixParMois[$currentMonth]['people'];
-        //     }
-        // }
+
+        // price repartition by month
+        Main::each($Service->user(), function ($User) use (&$totalUser, $dateCurrent)
+        {
+            Main::each($User->interval(), function ($Interval) use (&$totalUser, $dateCurrent)
+            {
+                if ($Interval->between($dateCurrent)) {
+                    $totalUser++;
+                }
+            });
+        });
+
+        $billPrice = $currentTarif->price()->get() / $totalUser;
+
+        // Applying bill
+        Main::each($Service->user(), function ($User) use ($billPrice, $dateCurrent)
+        {
+            Main::each($User->interval(), function ($Interval) use ($billPrice, $dateCurrent, $User)
+            {
+                if ($Interval->between($dateCurrent)) {
+                    $date = clone $dateCurrent;
+                    $User->bill( (new Bill ())->price($billPrice)->date($date) );
+                }
+            });
+        });
+
 
     }
-    echo '<pre>', var_dump( $currentMonth ), '</pre>';
 
+    Main::each($Service->user(), function ($User)
+    {
+        $User->update();
+    });
 
-    // foreach ($loutres as $nom => $loutre) {
-    //     if (isset($loutre['since'])) {
-    //         $avance = $paye = $restant = $avance = 0;
-    //
-    //         // total payé
-    //         if (isset($loutre['payed'])) {
-    //             foreach ($loutre['payed'] as $date => $prix) {
-    //                 $loutres[$nom]['total'] -= $prix;
-    //                 $paye += $prix;
-    //             }
-    //         }
-    //
-    //         // total restant Ã  payé si le prix est positif
-    //         if ($loutres[$nom]['total'] >= 0) {
-    //             $restant = abs($loutres[$nom]['total']);
-    //         } else {
-    //             // total avance si le prix payé est positif
-    //             $avance = abs($loutres[$nom]['total']);
-    //         }
-    //
-    //         $views[] = [
-    //             'nom' => $nom,
-    //             'payed' => number_format($paye, 2),
-    //             'restant' => number_format($restant, 2),
-    //             'avance' => number_format($avance, 2)
-    //         ];
-    //     }
-    //
-    // }
+    return $Service;
 }

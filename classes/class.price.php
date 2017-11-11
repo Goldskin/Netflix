@@ -1,14 +1,13 @@
-<?php /**
- *
- */
+<?php
+
 class Price extends Main
 {
 
     /**
      * add to current price
-     * @param [type] $price [description]
+     * @return mixed
      */
-    public function getTotal ()
+    public function total ()
     {
         $val = $this->get();
         if (is_array($val)) {

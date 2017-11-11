@@ -2,24 +2,38 @@
 
 class Service extends Main
 {
+
+    /**
+     * get the befinning
+     * @return Date
+     */
     public function getStart () {
-        foreach ($this->user() as $key => $User) {
-            // $Intervals = $User->interval();
 
-            if (is_array($User->interval())) {
-                foreach ($User->interval() as $Interval) {
+        $earliest = null;
 
-                    if (!isset($earliest) || $Interval->getDays() > $earliest->getDays()) {
-                        $earliest = $Interval;
-                    }
-
+        Self::each($this->user(), function ($User) use (&$earliest)
+        {
+            Self::each($User->interval(), function ($Interval) use (&$earliest)
+            {
+                if (is_null($earliest) || $Interval->days() > $earliest->days()) {
+                    $earliest = $Interval;
                 }
-            } else if (!isset($earliest) || $User->interval()->getDays() > $earliest->getDays()) {
-                $earliest = $User->interval();
-            }
-
-        }
+            });
+        });
 
         return $earliest->start();
+    }
+
+    /**
+     * get user based on name
+     * @param  string $name name
+     * @return User
+     */
+    public function getUser ($name) {
+        foreach ($this->user() as $key => $user) {
+            if (strtolower($user->name()) == strtolower($name)) {
+                return $user;
+            }
+        }
     }
 }

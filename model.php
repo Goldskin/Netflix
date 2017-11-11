@@ -29,6 +29,11 @@ function model () {
         }
 
         // determine les utilisations
+        if (isset($Data->admin)) {
+            $User->admin($Data->admin);
+        }
+
+        // determine les utilisations
         if (isset($Data->payed)) {
             foreach ($Data->payed as $Payment) {
                 $User->payment( (new Payment ())->price( $Payment->price )->date( $Payment->date ) );

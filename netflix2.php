@@ -67,6 +67,8 @@
  }
 
 
+
+
  foreach ($loutres as $nom => $loutre) {
      if (isset($loutre['since'])) {
          $avance = $paye = $restant = $avance = 0;
@@ -96,6 +98,8 @@
      }
 
  }
+
+
 
  ?><!DOCTYPE html>
  <html>

@@ -8,6 +8,11 @@ const classes = [
     'user',
     'date',
     'service',
+    'bill',
+    'name',
+    'advance',
+    'admin',
+    'unpayed'
 ];
 
 foreach (classes as $class) {
@@ -26,8 +31,8 @@ class Main
     /**
      * Get method called
      * @param  string $method method name
-     * @param  [type] $param  [description]
-     * @return [type]         [description]
+     * @param  array $param  all the params
+     * @return mixed
      */
     public function __call ($method, $param)
     {
@@ -58,7 +63,8 @@ class Main
 
     /**
      * set value
-     * @param [type] $value [description]
+     * @param mixed $value
+     * @param string|null $var
      */
     public function set ($value, $var = null)
     {
@@ -82,7 +88,12 @@ class Main
     public function get ($var = null)
     {
         $var = $this->className($var);
-        return $this->$var;
+
+        if (isset($this->$var)) {
+            return $this->$var;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -97,10 +108,10 @@ class Main
 
     /**
      * call the right class
-     * @param  string $class [description]
-     * @param  string $var   [description]
-     * @param  mixed $param [description]
-     * @return funtion     [description]
+     * @param  string $class Class
+     * @param  string $var   stored name
+     * @param  mixed $param params
+     * @return mixed
      */
     private function call ($class, $var, $param = null)
     {
@@ -130,5 +141,29 @@ class Main
         $this->call('Date', $var, $param);
         return $this;
     }
+
+    /**
+     * check all dynamic var
+     * @param  Object|array $vars     method name
+     * @param  callback $callback
+     * @return void
+     */
+    public static function each($vars, $callback) {
+        if (!is_null($vars)) {
+            if (is_array($vars)) {
+                foreach ($vars as $var) {
+                    if (is_callable($callback)) {
+                        $callback($var);
+                    }
+                }
+            } else {
+                if (is_callable($callback)) {
+                    $callback($vars);
+                }
+            }
+        }
+    }
+
+
 
 }
