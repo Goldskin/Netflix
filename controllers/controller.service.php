@@ -42,30 +42,39 @@ function controller (Service $Service) {
         // get approximative price and apply to each one
         $repartitionAprox = rounder($currentTarif->get() / $totalUser);
 
+        // add for each users the approximative price
         $userRepartition = [];
-        for ($i = $totalUser - 1; $i >= 0; $i--) {
+        for ($i = 0; $i > $totalUser; $i++) {
             $userRepartition[$i] = rounder($repartitionAprox);
         }
 
+        // get the difference between real price and approximative price
         $difference = $currentTarif->get() - array_sum($userRepartition);
-        $difference = round($difference*100)/100;
+        $difference = round($difference * 100) / 100;
 
 
+        // correct the the approximative price
         if ($difference < 0) {
             for ($i = $totalUser - 1; $i >= 0; $i--) {
-                $numberNeeded = $difference / $totalUser;
-                $numberNeededRounded = rounder($numberNeeded);
+                // get the price diffrence for the current user
+                $numberNeeded = rounder($difference / $totalUser);
 
-                $difference -= $numberNeededRounded;
-                $userRepartition[$i] += $numberNeededRounded;
+                // subtrack to the difference
+                $difference -= $numberNeeded;
+
+                // add or subtrack the difference
+                $userRepartition[$i] += $numberNeeded;
             }
         } else {
             for ($i = 0; $i < $totalUser; $i++) {
-                $numberNeeded = $difference / $totalUser;
-                $numberNeededRounded = rounder($numberNeeded);
+                // get the price diffrence for the current user
+                $numberNeeded = rounder($difference / $totalUser);
 
-                $difference -= $numberNeededRounded;
-                $userRepartition[$i] += $numberNeededRounded;
+                // subtrack to the difference
+                $difference -= $numberNeeded;
+
+                // add or subtrack the difference
+                $userRepartition[$i] += $numberNeeded;
             }
         }
 
