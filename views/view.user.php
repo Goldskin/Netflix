@@ -36,6 +36,4 @@
             </tbody>
         </table>
     <?php endif; ?>
-
 <?php endforeach; ?>
-

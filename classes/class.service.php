@@ -70,7 +70,8 @@ class Service extends Main
      * @param  Date  $dateCurrent
      * @return object|null tarif
      */
-    public function getActiveTarif ($dateCurrent) {
+    public function getActiveTarif ($dateCurrent)
+    {
         $dateCurrent = is_null($dateCurrent) ? $this->getStart() : $dateCurrent;
         $currentTarif = null;
 

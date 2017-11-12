@@ -7,13 +7,12 @@ require_once CLASSES_ROOT . '/class.main.php';
  * get model
  * @return Service get netflix
  */
-function controller (Service $Service) {
+function controller (Service $Service)
+{
 
     $Start = $Service->getStart();
     $Duration = (new Interval ())->start($Start);
-
     $rotation = [];
-
 
     for ($currentMonth = 1; $currentMonth <= $Duration->month(); $currentMonth++) {
 

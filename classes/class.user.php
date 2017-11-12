@@ -26,7 +26,8 @@ class User extends Main
      * @param  object $Objs
      * @return int|mixed price
      */
-    public function getTotals ($Objs) {
+    public function getTotals ($Objs)
+    {
         $Prices = new Price();
 
         Self::each($Objs, function ($Obj) use (&$Prices) {
@@ -40,7 +41,8 @@ class User extends Main
      * update service
      * @return void
      */
-    public function update () {
+    public function update ()
+    {
         if ($this->getBills() > 0) {
             if ($this->admin()) {
                 $this->payed( (new Price ())->set( $this->getBills() ) );

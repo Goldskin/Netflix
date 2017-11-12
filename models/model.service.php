@@ -4,7 +4,8 @@ require_once CLASSES_ROOT . '/class.main.php';
  * get model
  * @return Service get netflix
  */
-function model () {
+function model ()
+{
     $file    = file_get_contents(DATAS_ROOT . '/user.json');
     $loutres = json_decode($file);
     $file    = file_get_contents(DATAS_ROOT . '/price.json');

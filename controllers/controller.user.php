@@ -3,7 +3,7 @@ require_once MODELS_ROOT . '/model.service.php';
 require_once CONTROLLERS_ROOT . '/controller.service.php';
 require_once CONTROLLERS_ROOT . '/controller.view.php';
 
-$Netflix = model ();
+$Netflix = model();
 $Netflix = controller($Netflix);
 
 $views = [];

@@ -15,7 +15,8 @@ foreach (classes as $class) {
 class Main
 {
 
-    function __construct($param = null) {
+    function __construct($param = null)
+    {
         if($param != null && !is_object($param)) {
             $this->set($param);
         }
@@ -155,7 +156,8 @@ class Main
      * @param  callback     $callback
      * @return void
      */
-    public static function each($vars = null, $callback = null) {
+    public static function each($vars = null, $callback = null)
+    {
         if (!is_null($vars)) {
             if (is_array($vars)) {
                 foreach ($vars as $key => $var) {
