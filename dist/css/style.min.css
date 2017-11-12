@@ -7,3 +7,30 @@ img {
 h1 {
     font-weight: bold;
 }
+
+body {
+    color: #fff;
+    background: #141414;
+}
+
+table tbody,
+table tfoot,
+table thead {
+    background: #141414;
+    color: #fff;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #202020;
+}
+
+table,
+table tbody,
+table tfoot,
+table thead {
+    border-color: #202020;
+}
+
+.no-marg {
+    margin: 0;
+}
