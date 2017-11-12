@@ -118,7 +118,7 @@ class Main
      * @param  mixed $param params
      * @return mixed
      */
-    private function call (string $class, string $var, $param = null)
+    private function call ($class, $var, $param = null)
     {
         if ($param == null) {
             return $this->get($var);
@@ -129,7 +129,6 @@ class Main
         } else if (class_exists($class)) {
             $Obj = new $class ($param);
         } else {
-
             $Obj = new Self ($param);
         }
 
