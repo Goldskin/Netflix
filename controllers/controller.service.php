@@ -44,7 +44,7 @@ function controller (Service $Service) {
 
         // add for each users the approximative price
         $userRepartition = [];
-        for ($i = 0; $i > $totalUser; $i++) {
+        for ($i = 0; $i < $totalUser; $i++) {
             $userRepartition[$i] = rounder($repartitionAprox);
         }
 
