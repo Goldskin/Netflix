@@ -24,8 +24,8 @@
         <table class="table ">
             <thead class="thead-inverse">
                 <tr>
-                    <th>Prix</th>
                     <th>Date</th>
+                    <th>Prix</th>
                 </tr>
             </thead>
             <tbody>
