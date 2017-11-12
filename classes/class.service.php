@@ -56,7 +56,6 @@ class Service extends Main
         {
             Self::each($User->interval(), function ($Interval) use (&$totalUser, $dateCurrent, $User)
             {
-
                 if ($Interval->between($dateCurrent)) {
                     $totalUser[] = $User;
                 }
@@ -64,15 +63,6 @@ class Service extends Main
         });
 
         return $totalUser;
-    }
-
-    /**
-     * get total actives users
-     * @param  Date $dateCurrent current date where you search
-     * @return int               total user
-     */
-    public function getActiveUsersNumber (Date $dateCurrent = null) {
-        return count($this->getActiveUsers($dateCurrent));
     }
 
     /**
