@@ -56,7 +56,7 @@ function controller (Service $Service) {
         // correct the the approximative price
         if ($difference < 0) {
             for ($i = $totalUser - 1; $i >= 0; $i--) {
-                // get the price diffrence for the current user
+                // get the price difference for the current user
                 $numberNeeded = rounder($difference / $totalUser);
 
                 // subtrack to the difference
@@ -67,7 +67,7 @@ function controller (Service $Service) {
             }
         } else {
             for ($i = 0; $i < $totalUser; $i++) {
-                // get the price diffrence for the current user
+                // get the price difference for the current user
                 $numberNeeded = rounder($difference / $totalUser);
 
                 // subtrack to the difference
