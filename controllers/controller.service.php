@@ -39,10 +39,7 @@ function controller (Service $Service)
 
     }
 
-    Main::each($Service->user(), function ($User)
-    {
-        $User->update();
-    });
+    $Service->update();
 
     return $Service;
 }

@@ -54,7 +54,7 @@ class Service extends Main
 
         Self::each($this->user(), function ($User) use (&$totalUser, $dateCurrent)
         {
-            Self::each($User->interval(), function ($Interval) use (&$totalUser, $dateCurrent, $User)
+            Self::each($User->interval(), function ($Interval) use (&$totalUser, $dateCurrent, &$User)
             {
                 if ($Interval->between($dateCurrent)) {
                     $totalUser[] = $User;
@@ -87,5 +87,19 @@ class Service extends Main
         });
 
         return $currentTarif;
+    }
+
+    /**
+     * update service status
+     * @return object
+     */
+    public function update ()
+    {
+        Self::each($this->user(), function ($User)
+        {
+            $User->update();
+        });
+
+        return $this;
     }
 }
