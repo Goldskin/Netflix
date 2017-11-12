@@ -23,7 +23,7 @@ class User extends Main
 
     /**
      * get all prices
-     * @param  Obj $Objs
+     * @param  object $Objs
      * @return int|mixed price
      */
     public function getTotals ($Objs) {
@@ -36,7 +36,10 @@ class User extends Main
         return $Prices->total();
     }
 
-
+    /**
+     * update service
+     * @return void
+     */
     public function update () {
         if ($this->getBills() > 0) {
             if ($this->admin()) {

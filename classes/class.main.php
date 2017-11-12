@@ -86,6 +86,7 @@ class Main
 
     /**
      * get dynamic value from class
+     * @param  string string
      * @return string
      */
     public function get ($var = null)
@@ -101,7 +102,7 @@ class Main
 
     /**
      * get called className if $value is null
-     * @param  mixed $value called clas name
+     * @param  mixed $value called class name
      * @return string       class name
      */
     protected function className ($value = null)
@@ -116,7 +117,7 @@ class Main
      * @param  mixed $param params
      * @return mixed
      */
-    private function call ($class, $var, $param = null)
+    private function call (string $class, string $var, $param = null)
     {
         if ($param == null) {
             return $this->get($var);
@@ -136,7 +137,7 @@ class Main
 
     /**
      * specifique behevior
-     * @param  array $param parameters
+     * @param  array  $param parameters
      * @param  string $var  var name
      */
     public function date ($param = null, $var = 'date')
@@ -144,20 +145,20 @@ class Main
         if ($param == null) {
             return $this->get($var);
         }
-        $this->call('Date', $var, $param);
-        return $this;
+
+        return $this->call('Date', $var, $param);
     }
 
     /**
      * check all dynamic var
-     * @param  Object|array $vars     method name
-     * @param  callback $callback
+     * @param  object|array $vars     method name
+     * @param  callback     $callback
      * @return void
      */
-    public static function each($vars, $callback) {
+    public static function each($vars = null, $callback = null) {
         if (!is_null($vars)) {
             if (is_array($vars)) {
-                foreach ($vars as $var) {
+                foreach ($vars as $key => $var) {
                     if (is_callable($callback)) {
                         $callback($var);
                     }
