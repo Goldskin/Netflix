@@ -13,20 +13,17 @@ function controller (Service $Service) {
     for ($currentMonth = 1; $currentMonth <= $Duration->month(); $currentMonth++) {
 
         $dateCurrent  = clone $Start;
+
+        // add month
         $dateCurrent->modify('+' . $currentMonth . ' month');
-        $totalUser    = 0;
-        $currentTarif = null;
+
+        // get current price of service
+        $currentTarif = $Service->getActiveTarif($dateCurrent);
+
+        // price repartition by month
+        $totalUser = $Service->getActiveUsersNumber($dateCurrent);
 
         // Calc right price for current month
-        Main::each($Service->price(), function ($Price) use (&$currentTarif, $dateCurrent)
-        {
-            Main::each($Price->interval(), function ($Interval) use (&$currentTarif, $Price, $dateCurrent)
-            {
-                if ($Interval->between($dateCurrent)) {
-                    return ($currentTarif = $Price);
-                }
-            });
-        });
 
 
         // price repartition by month
