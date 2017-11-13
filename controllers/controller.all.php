@@ -10,7 +10,10 @@ $views = [];
 $views['total']['payed'] = 0;
 $views['total']['unpayed'] = 0;
 $views['total']['advance'] = 0;
-$Netflix::each($Netflix->user(), function ($User) use (&$views) {
+
+
+$Netflix::each($Netflix->user(), function ($User) use (&$views)
+{
     if (!is_null($User->payed()) || !is_null($User->unpayed()) || !is_null($User->advance())) {
         $views['resume'][] = [
              'name' => is_null($User->name()) ? '' : $User->name()->get(),
@@ -23,9 +26,9 @@ $Netflix::each($Netflix->user(), function ($User) use (&$views) {
         $views['total']['advance'] += is_null($User->advance()) ? 0 : $User->advance()->get();
     }
 });
+
 $views['total']['payed'] = $views['total']['payed'] == 0 ? '' : $views['total']['payed'] . ' &euro;';
 $views['total']['unpayed'] = $views['total']['unpayed'] == 0 ? '' : $views['total']['unpayed'] . ' &euro;';
 $views['total']['advance'] = $views['total']['advance'] == 0 ? '' : $views['total']['advance'] . ' &euro;';
-
 
 return view('all', $views);

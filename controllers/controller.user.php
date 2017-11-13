@@ -15,7 +15,8 @@ $bills = [
 $name = $_GET['user'];
 $User = $Netflix->getUser($name);
 
-Main::each($User->bill(), function ($Bill) use (&$bills) {
+Main::each($User->bill(), function ($Bill) use (&$bills)
+{
     $bills['line'][] = [
         'price' => $Bill->format(),
         'date' => $Bill->date()->format('d/m/Y')
@@ -24,6 +25,7 @@ Main::each($User->bill(), function ($Bill) use (&$bills) {
 });
 
 $bills['total'] = $bills['total'] == 0 ? '' : $bills['total'] . ' &euro;';
+
 $views[] = [
      'name' => is_null($User->name()) ? '': $User->name()->get(),
      'payed' => is_null($User->payed()) ? '': $User->payed()->format(),
