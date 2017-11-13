@@ -57,6 +57,7 @@ function model ()
         $Service->price($Tarif);
     }
 
+    $Service->createBills();
 
     return $Service;
 }

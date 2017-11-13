@@ -2,14 +2,12 @@
 
 class Service extends Main
 {
-
     /**
      * get the befinning
      * @return Date
      */
     public function getStart ()
     {
-
         $earliest = null;
 
         Self::each($this->user(), function ($User) use (&$earliest)
@@ -39,6 +37,7 @@ class Service extends Main
                 return;
             }
         });
+
         return $return;
     }
 
@@ -101,5 +100,38 @@ class Service extends Main
         });
 
         return $this;
+    }
+
+    public function createBills()
+    {
+        $Start = $this->getStart();
+        $Duration = (new Interval ())->start($Start);
+        $rotation = [];
+
+        for ($currentMonth = 0; $currentMonth <= $Duration->month(); $currentMonth++) {
+
+            $dateCurrent = new Date ($Start->format('Ymd'));
+
+            // add month
+            $dateCurrent->modify('+' . $currentMonth . ' month');
+
+            // get current price of service
+            $currentTarif = $this->getActiveTarif($dateCurrent);
+
+            // get active user
+            $Users      = $this->getActiveUsers($dateCurrent);
+            $totalUser  = count($Users);
+
+            // get split bill
+            $userRepartition = $currentTarif->split($totalUser);
+
+            // Applying bill
+            foreach ($Users as $key => $User) {
+                $User->bill( (new Price ())->set($userRepartition[$key])->date($dateCurrent) );
+            }
+
+        }
+
+        return $this->update();
     }
 }

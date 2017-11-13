@@ -59,7 +59,7 @@ class Interval extends Main
      */
     public function between (Date $Date, $callback = null)
     {
-        $started     = $this->start()->format('Ymd') < $Date->format('Ymd');
+        $started     = $this->start()->format('Ymd') <= $Date->format('Ymd');
         $notFinished = is_null($this->end()) ? true : $this->end()->format('Ymd') > $Date->format('Ymd');
 
         if ($started && $notFinished) {

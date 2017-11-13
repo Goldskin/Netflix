@@ -10,41 +10,48 @@ h1 {
 }
 
 body {
-    color: #fff;
+
     background: #141414;
 }
-
-table tbody,
-table tfoot,
-table thead {
-    background: #141414;
+body *:not(.xdebug-error) {
     color: #fff;
 }
 
-body table thead {
+body .xdebug-error * {
+    color: #000;
+}
+
+table:not(.xdebug-error) tbody,
+table:not(.xdebug-error) tfoot,
+table:not(.xdebug-error) thead {
+    background: #141414;
+    color: #fff;
+}
+
+body table:not(.xdebug-error) thead {
     border-bottom-color: red;
 }
 
-body table tbody {
+body table:not(.xdebug-error) tbody {
     border: 0;
 }
 
-tr {
+table:not(.xdebug-error) tr {
     line-height: 44px;
 }
 
-body table tfoot {
+body table:not(.xdebug-error) tfoot {
     border-top-color: red;
 }
 
-table tbody tr:nth-child(even) {
+table:not(.xdebug-error) tbody tr:nth-child(even) {
     background-color: #202020;
 }
 
-table,
-table tbody,
-table tfoot,
-table thead {
+table:not(.xdebug-error),
+table:not(.xdebug-error) tbody,
+table:not(.xdebug-error) tfoot,
+table:not(.xdebug-error) thead {
     border-color: #202020;
 }
 
