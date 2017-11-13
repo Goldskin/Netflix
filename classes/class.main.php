@@ -15,11 +15,14 @@ foreach (classes as $class) {
 class Main
 {
 
+    public static $counter = 0;
+
     function __construct($param = null)
     {
         if($param != null && !is_object($param)) {
             $this->set($param);
         }
+        self::$counter++;
     }
 
     /**
