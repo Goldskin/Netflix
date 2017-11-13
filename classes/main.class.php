@@ -23,6 +23,7 @@ class Main
             $this->set($param);
         }
         self::$counter++;
+        $this->id = self::$counter;
     }
 
     /**

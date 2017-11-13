@@ -10,8 +10,8 @@ $bills = [
     'total'=> 0,
 ];
 
-$name = $_GET['user'];
-$User = $Netflix->getUser($name);
+$id = $_GET['user'];
+$User = $Netflix->getId($id);
 
 Main::each($User->bill(), function ($Bill) use (&$bills)
 {

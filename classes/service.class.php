@@ -28,11 +28,11 @@ class Service extends Main
      * @param  string $name name
      * @return User
      */
-    public function getUser ($name)
+    public function getId ($id, $object = 'user')
     {
         $return = null;
-        Self::each($this->user(), function ($User) use (&$return, $name) {
-            if (strtolower($User->name()->get()) == strtolower($name)) {
+        Self::each($this->user(), function ($User) use (&$return, $id) {
+            if ($User->id() == $id) {
                 $return = $User;
                 return;
             }

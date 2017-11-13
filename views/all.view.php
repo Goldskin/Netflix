@@ -16,7 +16,7 @@
                 <td><?= $view['payed'] ?></td>
                 <td><?= $view['unpayed'] ?></td>
                 <td><?= $view['advance']  ?></td>
-                <td><a class="button alert no-marg" href="<?= '//' . $_SERVER['HTTP_HOST'] . $uri_parts[0] . '?user=' . strtolower($view['name']) ?>">Détails</td>
+                <td><a class="button alert no-marg" href="<?= '//' . $_SERVER['HTTP_HOST'] . $uri_parts[0] . '?user=' . strtolower($view['id']) ?>">Détails</td>
             </tr>
         <?php endforeach; ?>
     </tbody>
