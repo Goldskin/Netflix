@@ -7,7 +7,7 @@
  */
 function view($path, $views)
 {
-    require_once VIEWS_ROOT . '/view.header.php';
-    require_once VIEWS_ROOT . '/view.' . $path . '.php';
-    require_once VIEWS_ROOT . '/view.footer.php';
+    require_once VIEWS_ROOT . '/header.view.php';
+    require_once VIEWS_ROOT . '/' . $path . '.view.php';
+    require_once VIEWS_ROOT . '/footer.view.php';
 }

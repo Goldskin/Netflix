@@ -1,6 +1,6 @@
 <?php
-require_once MODELS_ROOT . '/model.service.php';
-require_once CONTROLLERS_ROOT . '/controller.view.php';
+require_once MODELS_ROOT . '/service.model.php';
+require_once CONTROLLERS_ROOT . '/view.controller.php';
 
 $Netflix = model();
 

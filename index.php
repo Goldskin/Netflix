@@ -11,7 +11,7 @@ DEFINE('DATAS_ROOT', getcwd() . '/datas');
 
 
 if (isset($_GET['user'])) {
-    require_once CONTROLLERS_ROOT . '/controller.user.php';
+    require_once CONTROLLERS_ROOT . '/user.controller.php';
 } else {
-    require_once CONTROLLERS_ROOT . '/controller.all.php';
+    require_once CONTROLLERS_ROOT . '/all.controller.php';
 }
