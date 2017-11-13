@@ -1,8 +1,6 @@
 <?php
 require_once CLASSES_ROOT . '/class.main.php';
 
-
-
 /**
  * get model
  * @return Service get netflix
@@ -16,7 +14,7 @@ function controller (Service $Service)
 
     for ($currentMonth = 1; $currentMonth <= $Duration->month(); $currentMonth++) {
 
-        $dateCurrent  = clone $Start;
+        $dateCurrent  = new Date ($Start->format('Ymd'));
 
         // add month
         $dateCurrent->modify('+' . $currentMonth . ' month');
@@ -33,8 +31,7 @@ function controller (Service $Service)
 
         // Applying bill
         foreach ($Users as $key => $User) {
-            $date = clone $dateCurrent;
-            $User->bill( (new Price ())->set($userRepartition[$key])->date($date) );
+            $User->bill( (new Price ())->set($userRepartition[$key])->date($dateCurrent) );
         }
 
     }
