@@ -9,7 +9,7 @@ const classes = [
 ];
 
 foreach (classes as $class) {
-    require_once CLASSES_ROOT . "/$class.class.php";
+    require_once CLASSES_ROOT . "$class.class.php";
 }
 
 class Main

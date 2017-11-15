@@ -1,5 +1,5 @@
 <?php
-require_once CLASSES_ROOT . '/main.class.php';
+require_once CLASSES_ROOT . 'main.class.php';
 /**
  * get model
  * @return Service get netflix

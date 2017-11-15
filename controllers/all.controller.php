@@ -1,6 +1,6 @@
 <?php
-require_once MODELS_ROOT . '/service.model.php';
-require_once CONTROLLERS_ROOT . '/view.controller.php';
+require_once MODELS_ROOT . 'service.model.php';
+require_once CONTROLLERS_ROOT . 'view.controller.php';
 
 $Netflix = model();
 
@@ -8,7 +8,6 @@ $views = [];
 $views['total']['payed'] = 0;
 $views['total']['unpayed'] = 0;
 $views['total']['advance'] = 0;
-
 
 $Netflix::each($Netflix->user(), function ($User) use (&$views)
 {
