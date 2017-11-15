@@ -15,8 +15,11 @@ define('DATAS_ROOT', ROOT . 'datas/');
 define('ROUTE', ROOT . 'route/');
 
 require_once ROUTE . 'core.controller.php';
-require_once ROUTE . 'route.controller.php';
-$Route = new Route ();
-$Route->add('details')
-    ->add('user/test')
-    ->redirect();
+require_once ROUTE . 'collection.controller.php';
+$RouteCollection = new RouteCollection ($_GET['p']);
+
+$RouteCollection
+    ->add((new Route ('user/test'))->param(2)->class('user')->method('index'))
+    ->add((new Route ('details'))->param(1));
+
+$RouteCollection->redirect();
