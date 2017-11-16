@@ -25,11 +25,19 @@ class Route
         return $this;
     }
 
+    /**
+     * get class
+     * @return [type] [description]
+     */
     public function getClass ()
     {
         return $this->class;
     }
 
+    /**
+     * get method
+     * @return [type] [description]
+     */
     public function getMethod ()
     {
         return $this->method;

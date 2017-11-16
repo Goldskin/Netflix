@@ -5,21 +5,24 @@
 
 
 define('WEBROOT', str_replace('index.php', '', $_SERVER['SCRIPT_NAME']));
-define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+define('ROOT',    str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+define('URL',     '//'. (($_SERVER['SERVER_NAME'] === 'localhost') ? 'localhost/charles' : $_SERV‌​ER['SERVER_NAME']));
 
-define('CLASSES_ROOT', ROOT . 'classes/');
-define('VIEWS_ROOT', ROOT . 'views/');
+
+define('CLASSES_ROOT',     ROOT . 'classes/');
+define('VIEWS_ROOT',       ROOT . 'views/');
 define('CONTROLLERS_ROOT', ROOT . 'controllers/');
-define('MODELS_ROOT', ROOT . 'models/');
-define('DATAS_ROOT', ROOT . 'datas/');
-define('ROUTE', ROOT . 'route/');
+define('MODELS_ROOT',      ROOT . 'models/');
+define('DATAS_ROOT',       ROOT . 'datas/');
+define('ROUTE',            ROOT . 'route/');
 
 require_once ROUTE . 'core.controller.php';
 require_once ROUTE . 'collection.controller.php';
+
 $RouteCollection = new RouteCollection ($_GET['p']);
 
 $RouteCollection
-    ->add((new Route ('user/test'))->param(2)->class('user')->method('index'))
+    ->add((new Route ('user'))->param(1)->class('user')->method('index'))
     ->add((new Route ('details'))->param(1));
 
 $RouteCollection->redirect();
