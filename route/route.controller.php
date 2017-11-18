@@ -19,7 +19,7 @@ class Route
      * @param  string $path path needed
      * @return object
      */
-    public function class ($class)
+    public function controller ($class)
     {
         $this->class = ucfirst(strtolower($class));
         return $this;
@@ -29,7 +29,7 @@ class Route
      * get class
      * @return string
      */
-    public function getClass ()
+    public function getController ()
     {
         return $this->class;
     }
@@ -38,7 +38,7 @@ class Route
      * get method
      * @return string
      */
-    public function getMethod ()
+    public function getAction ()
     {
         return $this->method;
     }
@@ -68,7 +68,7 @@ class Route
      * @param  string $path path needed
      * @return object
      */
-    public function method ($method)
+    public function action ($method)
     {
         $this->method = $method;
         return $this;
