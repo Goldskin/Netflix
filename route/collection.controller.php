@@ -18,27 +18,36 @@ class RouteCollection
      * @return array  param and Route
      */
     private function search ($url) {
+
         // sort all url
         usort($this->route ,'Self::sort');
 
         foreach ($this->route as $key => $route) {
+
             $preg = preg_quote($route->path, '/').'(?:\/|$)';
 
             // check for a match with url
-            if (preg_match_all("/".$preg."/", $url, $test)) {
+            if (
+                preg_match_all("/".$preg."/", $url, $test)
+                || ($route->path == '/' || $route->path == '') && ($url == '' || $url == '/')
+            ) {
                 // get param
-                $param = substr($url, (strlen($route->path) +1));
-                $paramExploded = array_filter(explode('/', $param), function ($val) {
-                    return !empty($val);
-                });
+                $param = $this->getParams($url, (strlen($route->path) +1));
 
                 return [
-                    $paramExploded,
+                    $param,
                     $route
                 ];
             }
         }
         throw new Exception('No route 404');
+    }
+
+    protected function getParams($url, $length) {
+        $param = substr($url, $length);
+        return array_filter(explode('/', $param), function ($val) {
+            return !empty($val);
+        });
     }
 
     /**
@@ -78,15 +87,12 @@ class RouteCollection
 
         if (file_exists($path)) {
             $classCalled = $controller . 'Controller';
-
-
             require_once $path;
 
-
             $controller = new $classCalled ($controller);
-
+            $params = $result[1]->getParam() ? array_chunk($result[0], $result[1]->getParam())[0] : [];
             if (method_exists($controller, 'index')) {
-                return call_user_func_array([$controller, $action], $result[0]);
+                return call_user_func_array([$controller, $action], $params);
             } else {
                 throw new Exception('No method 404');
            }

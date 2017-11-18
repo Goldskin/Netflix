@@ -40,4 +40,8 @@ class Controller
         require_once VIEWS_ROOT . 'footer.view.php';
         return $this;
     }
+
+    static public function fourOFour() {
+        require VIEWS_ROOT . '404/index.php';
+    }
 }

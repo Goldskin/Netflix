@@ -23,6 +23,6 @@ $RouteCollection = new RouteCollection ($_GET['p']);
 
 $RouteCollection
     ->add((new Route ('user'))->param(1)->class('user')->method('index'))
-    ->add((new Route ('details'))->param(1));
+    ->add((new Route ('/'))->class('home')->method('index'));
 
 $RouteCollection->redirect();

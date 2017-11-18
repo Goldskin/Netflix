@@ -4,18 +4,28 @@ require_once MODELS_ROOT . 'service.model.php';
 class UserController extends Controller
 {
 
-    public function index ($userId = 2) {
+    public function index ($userId = 0) {
         $Netflix = model();
 
+        if (!is_numeric($userId) && $userId === 0 ) {
+            return Self::fourOFour();
+        }
+
+        $userId = intval($userId);
+
+        $User = $Netflix->getId(intval($userId));
+
+        if ($User == null) {
+            return Self::fourOFour();
+        }
+
+
         $views = [];
+
         $bills = [
             'line'=> [],
             'total'=> 0,
         ];
-
-        // $id = $user;
-        $User = $Netflix->getId($userId);
-
 
         Main::each($User->bill(), function ($Bill) use (&$bills)
         {

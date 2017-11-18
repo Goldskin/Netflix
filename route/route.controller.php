@@ -27,7 +27,7 @@ class Route
 
     /**
      * get class
-     * @return [type] [description]
+     * @return string
      */
     public function getClass ()
     {
@@ -36,11 +36,20 @@ class Route
 
     /**
      * get method
-     * @return [type] [description]
+     * @return string
      */
     public function getMethod ()
     {
         return $this->method;
+    }
+
+    /**
+     * get method
+     * @return string
+     */
+    public function getParam ()
+    {
+        return $this->param;
     }
 
     /**
