@@ -37,7 +37,7 @@ class Price extends Main
      */
     public function format ($currency = '&euro;')
     {
-        return number_format ( $this->get() , 2 ,  "," ," " ) . ' ' . $currency;
+        return number_format ( $this->total() , 2 ,  "," ," " ) . ' ' . $currency;
     }
 
     /**
