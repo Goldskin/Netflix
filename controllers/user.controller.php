@@ -5,7 +5,12 @@ class UserController extends Controller
 {
 
     public function index ($userId = 0) {
-        $Netflix = model();
+        $Model = new serviceModel ();
+        $Model
+            ->load('user',    DATAS_ROOT . '/user.json')
+            ->load('price',   DATAS_ROOT . '/price.json')
+            ->load('options', DATAS_ROOT . '/options.json');
+        $Netflix = $Model->get();
 
         if (!is_numeric($userId) && $userId === 0 ) {
             return Self::fourOFour();

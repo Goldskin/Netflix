@@ -46,16 +46,17 @@ class Service extends Main
      * @param  Date $dateCurrent
      * @return array User
      */
-    public function getActiveUsers (Date $dateCurrent = null)
+    public function getActiveUsers (Date $Date = null)
     {
-        $dateCurrent = is_null($dateCurrent) ? $this->getStart() : $dateCurrent;
+        $Date = is_null($Date) ? $this->getStart() : $Date;
         $totalUser = [];
 
-        Self::each($this->user(), function ($User) use (&$totalUser, $dateCurrent)
+        Self::each($this->user(), function ($User) use (&$totalUser, $Date)
         {
-            Self::each($User->interval(), function ($Interval) use (&$totalUser, $dateCurrent, &$User)
+            Self::each($User->interval(), function ($Interval) use (&$totalUser, $Date, &$User)
             {
-                if ($Interval->between($dateCurrent)) {
+
+                if ($Interval->between($Date)) {
                     $totalUser[] = $User;
                 }
             });
@@ -102,6 +103,10 @@ class Service extends Main
         return $this;
     }
 
+    /**
+     * generate bills for each user
+     * @return mixed
+     */
     public function createBills()
     {
         $Start = $this->getStart();
@@ -124,6 +129,8 @@ class Service extends Main
 
             // get split bill
             $userRepartition = $currentTarif->split($totalUser);
+
+
 
             // Applying bill
             foreach ($Users as $key => $User) {

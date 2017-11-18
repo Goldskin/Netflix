@@ -22,6 +22,25 @@ class User extends Main
     }
 
     /**
+     * get a specifique bill
+     * @return int|float
+     */
+    public function getBill (Date $Date)
+    {
+        $return = null;
+
+        Self::each($this->bill(), function ($Bill) use (&$return, $Date)
+        {
+            // echo "<pre>", var_dump($Bill->date(), $Date), "</pre>";
+            if ($Bill->date() == $Date) {
+                $return = $Bill;
+            }
+        });
+
+        return $return;
+    }
+
+    /**
      * get all prices
      * @param  object $Objs
      * @return int|mixed price
