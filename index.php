@@ -17,6 +17,7 @@ $RouteCollection = new RouteCollection ($_GET['p']);
 
 $RouteCollection
     ->add((new Route ('user'))->param(1)->controller('user')->action('index'))
-    ->add((new Route ('/'))->controller('home')->action('index'));
+    ->add((new Route ('/'))->controller('home')->action('index'))
+    ->add((new Route ('bill'))->param(1)->controller('bill')->action('index'));
 
 $RouteCollection->redirect();
