@@ -24,6 +24,7 @@
             <tr>
                 <th>Date</th>
                 <th>Prix</th>
+                <th class="text-right">Facture</th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +32,7 @@
                 <tr>
                     <td><?= $bill['date'] ?></td>
                     <td><?= $bill['price'] ?></td>
+                    <td class="text-right"><a class="button alert no-marg" href="<?= $bill['url'] ?>">Facture</td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

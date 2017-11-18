@@ -29,19 +29,20 @@ class UserController extends Controller
 
         $bills = [
             'line'=> [],
-            'total'=> 0,
+            'total'=> new Price (),
         ];
 
         Main::each($User->bill(), function ($Bill) use (&$bills)
         {
             $bills['line'][] = [
                 'price' => $Bill->format(),
-                'date' => $Bill->date()->format('d/m/Y')
+                'date' => $Bill->date()->format('d/m/Y'),
+                'url' => URL . '/bill/' . $Bill->date()->format('Ymd')
             ];
-            $bills['total'] += $Bill->get();
+            $bills['total']->set($Bill);
         });
 
-        $bills['total'] = $bills['total'] == 0 ? '' : $bills['total'] . ' &euro;';
+        $bills['total'] = $bills['total']->get() == 0 ? '' : $bills['total']->format();
 
         $views['user'] = [
              'name' => is_null($User->name()) ? '': $User->name()->get(),
