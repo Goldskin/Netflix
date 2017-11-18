@@ -18,20 +18,20 @@ class BillController extends Controller
 
         $Users = $Netflix->getActiveUsers($Date);
         $Bills = [];
-        $total = 0;
+        $total = new Price ();
         foreach ($Users as $User) {
             $Bill = $User->getBill($Date);
             $Bills[] = [
                 'user' => $User->name()->get(),
                 'bill' => $Bill->format()
             ];
-            $total += $Bill->get();
+            $total->set($Bill);
         }
 
         $views = [
             'lines' => $Bills,
             'date' => $Date->format('d/m/Y'),
-            'total' => $total
+            'total' => $total->format()
         ];
 
         $this->set($views)->render('index');

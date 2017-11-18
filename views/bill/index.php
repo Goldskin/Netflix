@@ -1,7 +1,6 @@
 <h1 class="text-center">Facture du <?= $date ?></h1>
 <a class="button alert" href="<?= '//' . $_SERVER['HTTP_HOST'] . WEBROOT ?>">&larr; Retour</a>
 <?php if (!empty($lines)): ?>
-    <h2 class="text-center">Historique facture</h2>
     <table class="table ">
         <thead class="thead-inverse">
             <tr>
@@ -20,7 +19,7 @@
         <tfoot>
             <tr>
                 <td>Total</td>
-                <td><?= $total ?> &euro;</td>
+                <td><?= $total ?></td>
             </tr>
         </tfoot>
     </table>
