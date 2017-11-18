@@ -132,6 +132,23 @@ class RouteCollection
         return $method;
     }
 
+
+    /**
+     * get action and check it
+     * @param  object $class
+     * @param  string $method
+     * @return string             method name
+     */
+    protected function checkParams ($param, $length)
+    {
+        if (count($param) != $length) {
+            return Controller::fourOFour();
+        }
+
+
+        return $param;
+    }
+
     /**
      * redirect to new view (where all the magic happens)
      * @return mixed
@@ -141,6 +158,7 @@ class RouteCollection
         $result     = $this->search($this->url);
         $controller = $this->checkController($result[1]->getController());
         $action     = $this->checkAction($controller, $result[1]->getAction());
+        $params     = $this->checkParams($result[0], $result[1]->getParam());
         $params     = $result[1]->getParam() ? array_chunk($result[0], $result[1]->getParam())[0] : [];
 
         return call_user_func_array([$controller, $action], $params);

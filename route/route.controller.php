@@ -5,7 +5,7 @@
 class Route
 {
 
-    protected $param;
+    protected $param = 0;
     protected $class;
     protected $method;
 
