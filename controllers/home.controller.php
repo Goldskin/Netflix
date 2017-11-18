@@ -27,7 +27,7 @@ class HomeController extends Controller
                      'payed' => is_null($User->payed()) ? '' : $User->payed()->format(),
                      'unpayed' => is_null($User->unpayed()) ? '' : $User->unpayed()->format(),
                      'advance' => is_null($User->advance()) ? '' : $User->advance()->format(),
-                     'url' => URL . '/user/' . (is_null($User->id()) ? '' : $User->id())
+                     'url' => is_null($User->id()) ? '#' : URL . '/user/' . $User->id()
                 ];
                 is_null($User->payed())   ? 0 : $views['payed']  ->set($User->payed());
                 is_null($User->unpayed()) ? 0 : $views['unpayed']->set($User->unpayed());
