@@ -57,13 +57,20 @@ class Main
 
     /**
      * set value
-     * @param mixed $value
-     * @param string|null $var
+     * @param mixed       $value can be anything
+     * @param string|null $var   var name
      */
     public function set ($value, $var = null)
     {
+        // if is the same object, extract value and store it
+        if (is_object($value) && get_class($value) == get_called_class()) {
+            $value = $value->get();
+        }
+
         $var = $this->className($var);
 
+        // put val in single var
+        // if multiple, tranform into array
         if (isset($this->$var) && !is_array($this->$var)) {
             $this->$var = [$this->$var, $value];
         } else if (isset($this->$var) && is_array($this->$var)) {
