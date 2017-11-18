@@ -23,7 +23,8 @@ class BillController extends Controller
             $Bill = $User->getBill($Date);
             $Bills[] = [
                 'user' => $User->name()->get(),
-                'bill' => $Bill->format()
+                'bill' => $Bill->format(),
+                'url' => URL . '/user/' . (is_null($User->id()) ? '' : $User->id())
             ];
             $total->set($Bill);
         }

@@ -24,8 +24,7 @@
             <td>Total</td>
             <td><?= $payed ?></td>
             <td><?= $unpayed ?></td>
-            <td><?= $advance ?></td>
-            <td>&nbsp;</td>
+            <td colspan="2"><?= $advance ?></td>
         </tr>
     </tfoot>
 </table>

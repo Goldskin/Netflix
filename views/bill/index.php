@@ -4,8 +4,9 @@
     <table class="table ">
         <thead class="thead-inverse">
             <tr>
-                <th>Date</th>
+                <th>Utilisateur</th>
                 <th>Prix</th>
+                <th class="text-right">Détails</th>
             </tr>
         </thead>
         <tbody>
@@ -13,13 +14,14 @@
                 <tr>
                     <td><?= $line['user'] ?></td>
                     <td><?= $line['bill'] ?></td>
+                    <td class="text-right"><a class="button alert no-marg" href="<?= $line['url'] ?>">Utilisateur</td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
         <tfoot>
             <tr>
                 <td>Total</td>
-                <td><?= $total ?></td>
+                <td colspan="2"><?= $total ?></td>
             </tr>
         </tfoot>
     </table>

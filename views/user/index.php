@@ -39,7 +39,7 @@
         <tfoot>
             <tr>
                 <td>Total</td>
-                <td><?= $user['bill']['total'] ?></td>
+                <td colspan="2"><?= $user['bill']['total'] ?></td>
             </tr>
         </tfoot>
     </table>
