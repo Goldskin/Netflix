@@ -31,6 +31,7 @@ class Service extends Main
     public function getId ($id, $object = 'user')
     {
         $return = null;
+
         Self::each($this->user(), function ($User) use (&$return, $id) {
             if ($User->id() == $id) {
                 $return = $User;
@@ -111,47 +112,145 @@ class Service extends Main
     {
         $Start = $this->getStart();
         $Duration = (new Interval ())->start($Start);
-        $rotation = 0;
+        $this->rotation = 0;
+        $free = $this->free()->get();
 
-        for ($currentMonth = 0; $currentMonth <= $Duration->month(); $currentMonth++) {
 
-            $dateCurrent = new Date ($Start->format('Ymd'));
+        for ($currentMonth = !is_null($free) ? $free : 0; $currentMonth <= $Duration->month(); $currentMonth++) {
+
+            $Date = new Date ($Start->format('Ymd'));
 
             // add month
-            $dateCurrent->modify('+' . $currentMonth . ' month');
+            $Date->modify('+' . $currentMonth . ' month');
 
             // get current price of service
-            $currentTarif = $this->getActiveTarif($dateCurrent);
+            $currentTarif = $this->getActiveTarif($Date);
 
             // get active user
-            $Users      = $this->getActiveUsers($dateCurrent);
+            $Users      = $this->getActiveUsers($Date);
             $totalUser  = count($Users);
 
             // get split bill
-            $userRepartition = $currentTarif->split($totalUser);
+            $bill = $currentTarif->split($totalUser);
 
-            // number of price diff
-            $number = count(array_filter($userRepartition, function ($a) use ($userRepartition) {
-                return $a != $userRepartition[0];
-            }));
 
-            // applying bills
-            foreach ($Users as $key => $User) {
-                $User->bill( (new Price ())->set($userRepartition[$rotation])->date($dateCurrent) );
-                $rotation++;
-                if ($rotation == $totalUser ) {
-                    $rotation = 0;
-                }
-            }
-
-            if ($rotation + $number < $totalUser) {
-                $rotation += $number;
-            } else {
-                $rotation = $number - ( ($totalUser) - $rotation);
-            }
+            $this->applyBill($Users, $bill, $Date);
 
         }
 
         return $this->update();
+    }
+
+    /**
+     * apply bill and rotate for the next month
+     * @param  array $Users
+     * @param  array $bill
+     * @param  Date  $Date
+     * @return object
+     */
+
+    protected function applyBill ($Users, $bill, $Date) {
+
+        $totalUser  = count($Users);
+
+        // number of price diff
+        $number = count(array_filter($bill, function ($a) use ($bill) {
+            return $a != $bill[0];
+        }));
+
+        // applying bills
+        foreach ($Users as $key => $User) {
+            $User->bill( (new Price ())->set($bill[$this->rotation])->date($Date) );
+            $this->rotation++;
+            if ($this->rotation == $totalUser ) {
+                $this->rotation = 0;
+            }
+        }
+
+        // set for next rotation the number
+        if ($this->rotation + $number < $totalUser) {
+            $this->rotation += $number;
+        } else {
+            $this->rotation = $number - ( ($totalUser) - $this->rotation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * add all tarifs
+     * @param  array $tarifs all tarifs
+     * @return object
+     */
+    public function createTarif ($tarifs) {
+        foreach ($tarifs as $Data) {
+            $Interval = (new Interval ())->start($Data->start);
+
+            // a tarif does not necessarily have a end
+            if (isset($Data->end)) {
+                $Interval->end($Data->end);
+            }
+
+            $Tarif = (new Price ())->set( $Data->price )->interval( $Interval );
+            $this->price($Tarif);
+        }
+
+        return $this;
+    }
+
+    /**
+     * add all users
+     * @param  array $user all users
+     * @return object
+     */
+    public function createUser ($user) {
+        foreach ($user as $Data) {
+            $User = (new User ())->name($Data->name);
+
+            // add all usages
+            if (isset($Data->use)) {
+                foreach ($Data->use as $Use) {
+                    $Interval = (new Interval ())->start( $Use->start );
+
+                    // if user allready finished the session
+                    if (isset($Use->end)) {
+                        $Interval->end( $Use->end );
+                    }
+
+                    // set session use
+                    $User->interval($Interval);
+                }
+            }
+
+            // check if current user is admin
+            if (isset($Data->admin)) {
+                $User->admin($Data->admin);
+            }
+
+            // add all payments
+            if (isset($Data->payed)) {
+                foreach ($Data->payed as $Payment) {
+                    $User->payment( (new Price ())->set( $Payment->price )->date( $Payment->date ) );
+                }
+            }
+
+            // add user
+            $this->user($User);
+        }
+
+        return $this;
+    }
+
+    /**
+     * add options to your service
+     * @param  array $options options
+     * @return object
+     */
+    public function createOptions ($options) {
+        $options = get_object_vars($options);
+        foreach ($options as $key => $value) {
+            $this->{$key}($value);
+        }
+        return $this;
     }
 }
