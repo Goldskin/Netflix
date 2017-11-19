@@ -19,13 +19,32 @@ class BillController extends Controller
         $Users = $Netflix->getActiveUsers($Date);
         $Bills = [];
         $total = new Price ();
+
+        $allReadyDisplayed = [];
+
         foreach ($Users as $User) {
+
             $Bill = $User->getBill($Date);
+
+            if (is_array($Bill)) {
+                while (count($Bill)) {
+                    if (array_search($Bill[0]->id(), $allReadyDisplayed) !== false) {
+                        array_shift($Bill);
+                    } else {
+                        $allReadyDisplayed[] = $Bill[0]->id();
+                        $Bill = $Bill[0];
+                        break;
+                    }
+                }
+            }
+
+
             $Bills[] = [
                 'user' => $User->name()->get(),
                 'bill' => $Bill->format(),
                 'url'  => (is_null($User->id()) ? '#' : URL . '/user/' . $User->id())
             ];
+
             $total->set($Bill);
         }
 
