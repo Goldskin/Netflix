@@ -31,9 +31,15 @@ class User extends Main
 
         Self::each($this->bill(), function ($Bill) use (&$return, $Date)
         {
-            // echo "<pre>", var_dump($Bill->date(), $Date), "</pre>";
             if ($Bill->date() == $Date) {
-                $return = $Bill;
+                // $return = $Bill;
+                if (is_array($return)) {
+                    $return[] = $Bill;
+                } else if (!is_null($return)) {
+                    $return = [$return, $Bill];
+                } else {
+                    $return = $Bill;
+                }
             }
         });
 
