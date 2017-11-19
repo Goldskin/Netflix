@@ -49,6 +49,7 @@ class BillController extends Controller
         }
 
         $views = [
+            'title' => (is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get()) . ' - Facture du ' . $Date->format('d/m/Y'),
             'lines' => $Bills,
             'date' => $Date->format('d/m/Y'),
             'total' => $total->format()

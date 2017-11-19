@@ -24,9 +24,29 @@ class UserController extends Controller
             return Self::fourOFour();
         }
 
-
         $views = [];
 
+        $views['title'] = is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get() . ' - ' . $User->name()->get();
+
+
+
+        $views['user'] = [
+             'name' => is_null($User->name()) ? '': $User->name()->get(),
+             'payed' => is_null($User->payed()) ? '': $User->payed()->format(),
+             'unpayed' => is_null($User->unpayed()) ? '': $User->unpayed()->format(),
+             'advance' => is_null($User->advance()) ? '': $User->advance()->format(),
+             'bill' => $this->getBillHistory($User)
+        ];
+
+        $this->set($views)->render('index');
+    }
+
+    /**
+     * get layout historique
+     * @param  [type] $User [description]
+     * @return [type]       [description]
+     */
+    protected function getBillHistory ($User) {
         $bills = [
             'line'=> [],
             'total'=> new Price (),
@@ -43,15 +63,6 @@ class UserController extends Controller
         });
 
         $bills['total'] = $bills['total']->get() == 0 ? '' : $bills['total']->format();
-
-        $views['user'] = [
-             'name' => is_null($User->name()) ? '': $User->name()->get(),
-             'payed' => is_null($User->payed()) ? '': $User->payed()->format(),
-             'unpayed' => is_null($User->unpayed()) ? '': $User->unpayed()->format(),
-             'advance' => is_null($User->advance()) ? '': $User->advance()->format(),
-             'bill' => $bills
-        ];
-
-        $this->set($views)->render('index');
+        return $bills;
     }
 }

@@ -18,6 +18,8 @@ class HomeController extends Controller
         $views['unpayed'] = new Price ();
         $views['advance'] = new Price ();
 
+        $views['title'] = (is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get()) . ' - Home';
+
         $Netflix::each($Netflix->user(), function ($User) use (&$views)
         {
             if (!is_null($User->payed()) || !is_null($User->unpayed()) || !is_null($User->advance())) {
