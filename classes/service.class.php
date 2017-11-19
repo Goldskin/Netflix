@@ -111,7 +111,7 @@ class Service extends Main
     {
         $Start = $this->getStart();
         $Duration = (new Interval ())->start($Start);
-        $rotation = [];
+        $rotation = 0;
 
         for ($currentMonth = 0; $currentMonth <= $Duration->month(); $currentMonth++) {
 
@@ -130,11 +130,24 @@ class Service extends Main
             // get split bill
             $userRepartition = $currentTarif->split($totalUser);
 
+            // number of price diff
+            $number = count(array_filter($userRepartition, function ($a) use ($userRepartition) {
+                return $a != $userRepartition[0];
+            }));
 
-
-            // Applying bill
+            // applying bills
             foreach ($Users as $key => $User) {
-                $User->bill( (new Price ())->set($userRepartition[$key])->date($dateCurrent) );
+                $User->bill( (new Price ())->set($userRepartition[$rotation])->date($dateCurrent) );
+                $rotation++;
+                if ($rotation == $totalUser ) {
+                    $rotation = 0;
+                }
+            }
+
+            if ($rotation + $number < $totalUser) {
+                $rotation += $number;
+            } else {
+                $rotation = $number - ( ($totalUser) - $rotation);
             }
 
         }
