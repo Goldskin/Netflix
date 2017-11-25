@@ -13,7 +13,7 @@ class HomeController extends Controller
         $Netflix = $Model->get();
 
         $views = [];
-        $views['resume']  = [];
+        $views['users']  = [];
         $views['billed']  = new Price ();
         $views['payed']   = new Price ();
         $views['unpayed'] = new Price ();
@@ -23,16 +23,37 @@ class HomeController extends Controller
 
         $Netflix::each($Netflix->user(), function ($User) use (&$views)
         {
+
             if (!is_null($User->payed()) || !is_null($User->unpayed()) || !is_null($User->advance())) {
-                $views['resume'][] = [
-                     'name'    => is_null($User->name())     ? ''  : $User->name()->get(),
-                     'id'      => is_null($User->id())       ? ''  : $User->id(),
-                     'billed'  => is_null($User->getBills()) ? ''  : $User->getBills()->format(),
-                     'payed'   => is_null($User->payed())    ? ''  : $User->payed()->format(),
-                     'unpayed' => is_null($User->unpayed())  ? ''  : $User->unpayed()->format(),
-                     'advance' => is_null($User->advance())  ? ''  : $User->advance()->format(),
-                     'url'     => is_null($User->id())       ? '#' : URL . '/user/' . $User->id()
+                $current = [];
+
+                $current['name']    = is_null($User->name())     ? ''  : $User->name()->get();
+                $current['id']      = is_null($User->id())       ? ''  : $User->id();
+                $current['url']     = is_null($User->id()) ? '#' : URL . '/user/' . $User->id();
+
+                $current['billed']  = [
+                    'value' => is_null($User->getBills()) ? ''  : $User->getBills()->format(),
+                    'class' => ''
                 ];
+
+                $current['payed']   = [
+                    'value' => is_null($User->payed())    ? ''  : $User->payed()->format(),
+                    'class' => is_null($User->payed())    ? ''  : Price::getStatus($User->payed()->status()->get())
+                ];
+
+                $current['unpayed'] = [
+                    'value' => is_null($User->unpayed())  ? ''  : $User->unpayed()->format(),
+                    'class' => is_null($User->unpayed())  ? ''  : Price::getStatus($User->unpayed()->status()->get())
+                ];
+
+                $current['advance'] = [
+                    'value' => is_null($User->advance())  ? ''  : $User->advance()->format(),
+                    'class' => is_null($User->advance())  ? ''  : Price::getStatus($User->advance()->status()->get())
+                ];
+
+
+                $views['users'][] = $current;
+
                 is_null($User->getBills()) ? 0 : $views['billed'] ->set($User->getBills());
                 is_null($User->payed())    ? 0 : $views['payed']  ->set($User->payed());
                 is_null($User->unpayed())  ? 0 : $views['unpayed']->set($User->unpayed());

@@ -20,15 +20,28 @@ class UserController extends Controller
 
         $views['title'] = is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get() . ' - ' . $User->name()->get();
 
+        $views['user']['name']    = is_null($User->name())     ? '': $User->name()->get();
+
+        $views['user']['billed']  = [
+            'value' => is_null($User->getBills()) ? '': $User->getBills()->format(),
+            'class' => ''
+        ];
+
+        $views['user']['payed'] = [
+            'value' => is_null($User->payed()) ? '' : $User->payed()->format(),
+            'class' => is_null($User->payed()) ? '' : Price::getStatus($User->payed()->status()->get())
+        ];
 
 
-        $views['user'] = [
-             'name' => is_null($User->name()) ? '': $User->name()->get(),
-             'billed' => is_null($User->getBills()) ? '': $User->getBills()->format(),
-             'payed' => is_null($User->payed()) ? '': $User->payed()->format(),
-             'unpayed' => is_null($User->unpayed()) ? '': $User->unpayed()->format(),
-             'advance' => is_null($User->advance()) ? '': $User->advance()->format(),
-             'bill' => $this->getBillHistory($User)
+
+        $views['user']['unpayed'] = [
+            'value' => is_null($User->unpayed()) ? '' : $User->unpayed()->format(),
+            'class' => is_null($User->unpayed()) ? '' : Price::getStatus($User->unpayed()->status()->get())
+        ];
+
+        $views['user']['advance'] = [
+            'value' => is_null($User->advance()) ? '' : $User->advance()->format(),
+            'class' => is_null($User->advance()) ? '' : Price::getStatus($User->advance()->status()->get())
         ];
 
 
@@ -40,8 +53,8 @@ class UserController extends Controller
 
     /**
      * get layout historique
-     * @param  [type] $User [description]
-     * @return [type]       [description]
+     * @param  User $User user needed
+     * @return        [description]
      */
     protected function history ($User) {
         $bills = [

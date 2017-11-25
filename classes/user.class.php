@@ -71,23 +71,38 @@ class User extends Main
     public function update ()
     {
         if ($this->admin()) {
-            $this->payed( (new Price ())->set( $this->getBills()->get() ) );
+            $this->payed( (new Price ())->set( $this->getBills()->get() )->status(Price::none) );
         } else if ($this->payment()) {
 
-            $this->payed( (new Price ())->set( $this->getPayments() ) );
-            $avance  = $this->getPayments()->get() - $this->getBills()->get();
+            $payements = $this->getPayments()->get();
+            $bills     = $this->getBills()->get();
+
+            if ($payements > $bills) {
+                $status = Price::payed;
+            } else if ($this->getLast('bill') && $bills - $payements >= $this->getLast('bill')->get()){
+                $status = Price::unpayed;
+            } else if ($payements != $bills) {
+                $status = Price::paying;
+            } else {
+                $status = Price::none;
+            }
+
+            $this->payed( (new Price ())->set($payements)->status($status) );
+            $avance  = $payements - $bills;
             $avance  = $avance > 0 ? $avance : 0;
-            $unpayed = $this->getBills()->get() - $this->getPayments()->get();
+            $unpayed = $bills - $payements;
             $unpayed = $unpayed > 0 ? $unpayed : 0;
 
             if ($unpayed > 0) {
-                $this->unpayed( (new Price ())->set($unpayed) );
+                $this->unpayed( (new Price ())->set($unpayed)->status(Price::paying) );
             }
+
             if ($avance > 0) {
-                $this->advance( (new Price ())->set($avance) );
+                $this->advance( (new Price ())->set($avance)->status(Price::payed) );
             }
+
         } else if ($this->getBills()) {
-            $this->unpayed( (new Price ())->set($this->getBills()->get()) );
+            $this->unpayed( (new Price ())->set($this->getBills()->get())->status(Price::paying) );
         }
 
         return $this;

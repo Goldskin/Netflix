@@ -10,14 +10,14 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($resume as $key => $view) : ?>
+        <?php foreach ($users as $user) : ?>
             <tr>
-                <td><?= $view['name'] ?></td>
-                <td><?= $view['billed'] ?> </td>
-                <td><?= $view['payed'] ?></td>
-                <td><?= $view['unpayed'] ?></td>
-                <td><?= $view['advance']  ?></td>
-                <td class="text-right"><a class="button alert no-marg text-right" href="<?= $view['url']  ?>">Détails</td>
+                <td><?= $user['name'] ?></td>
+                <td class="<?= $user['billed']['class'] ?>"><?= $user['billed']['value'] ?> </td>
+                <td class="<?= $user['payed']['class'] ?>"><?= $user['payed']['value'] ?></td>
+                <td class="<?= $user['unpayed']['class'] ?>"><?= $user['unpayed']['value'] ?></td>
+                <td class="<?= $user['advance']['class'] ?>"><?= $user['advance']['value']  ?></td>
+                <td class="text-right"><a class="button alert no-marg text-right" href="<?= $user['url']  ?>">Détails</td>
             </tr>
         <?php endforeach; ?>
     </tbody>
@@ -26,8 +26,8 @@
             <td>Total</td>
             <td><?= $billed ?></td>
             <td><?= $payed ?></td>
-            <td><?= $unpayed ?></td>
-            <td colspan="2"><?= $advance ?></td>
+            <td class="unpayed"><?= $unpayed ?></td>
+            <td colspan="2" class="payed"><?= $advance ?></td>
         </tr>
     </tfoot>
 </table>
