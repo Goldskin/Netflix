@@ -131,7 +131,7 @@ class Main
      */
     private function call ($class, $var, $param = null)
     {
-        if ($param == null) {
+        if ($param == null && $param != 0) {
             return $this->get($var);
         }
 
