@@ -22,6 +22,7 @@ class Main
         if($param != null && !is_object($param)) {
             $this->set($param);
         }
+
         self::$counter++;
         $this->id = self::$counter;
     }
@@ -35,7 +36,6 @@ class Main
     public function __call ($method, $param)
     {
         $className = ucfirst(strtolower($method));
-        // $className = self::arrayOut($className);
         $param = self::arrayOut($param);
         return $this->call($className, $method, $param);
     }
@@ -72,11 +72,11 @@ class Main
         // put val in single var
         // if multiple, tranform into array
         if (isset($this->$var) && !is_array($this->$var)) {
-            $this->$var = [$this->$var, $value];
+            $this->{$var} = [$this->$var, $value];
         } else if (isset($this->$var) && is_array($this->$var)) {
             $this->{$var}[] = $value;
         } else {
-            $this->$var = $value;
+            $this->{$var} = $value;
         }
 
         return $this;
@@ -105,8 +105,8 @@ class Main
     {
         $var = $this->className($var);
 
-        if (isset($this->$var)) {
-            return $this->$var;
+        if (isset($this->{$var})) {
+            return $this->{$var};
         } else {
             return null;
         }
