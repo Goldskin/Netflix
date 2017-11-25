@@ -2,6 +2,11 @@
 
 class Price extends Main
 {
+    const none    = 0;
+    const payed   = 1;
+    const paying  = 2;
+    const unpayed = 3;
+
     /**
      * round up or down the current price
      * @param  int|float $difference price
@@ -89,6 +94,28 @@ class Price extends Main
         ksort($userRepartition);
 
         return $userRepartition;
+    }
+
+    /**
+     * format to specific class
+     * @var [type]
+     */
+    static public function getStatus ($code)
+    {
+        switch ($code) {
+            case Price::payed:
+                return 'payed';
+                break;
+            case Price::paying:
+                return 'paying';
+                break;
+            case Price::unpayed:
+                return 'unpayed';
+                break;
+            default:
+                return '';
+                break;
+        }
     }
 
 }
