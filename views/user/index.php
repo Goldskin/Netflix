@@ -4,6 +4,7 @@
 <table class="table">
     <thead class="thead-inverse">
         <tr>
+            <th>Facturé</th>
             <th>Payé</th>
             <th>Restant à payer</th>
             <th>Avance</th>
@@ -11,6 +12,7 @@
     </thead>
     <tbody>
         <tr>
+            <td><?= $user['billed'] ?></td>
             <td><?= $user['payed'] ?></td>
             <td><?= $user['unpayed'] ?></td>
             <td><?= $user['advance']  ?></td>

@@ -24,6 +24,7 @@ class UserController extends Controller
 
         $views['user'] = [
              'name' => is_null($User->name()) ? '': $User->name()->get(),
+             'billed' => is_null($User->getBills()) ? '': $User->getBills()->format(),
              'payed' => is_null($User->payed()) ? '': $User->payed()->format(),
              'unpayed' => is_null($User->unpayed()) ? '': $User->unpayed()->format(),
              'advance' => is_null($User->advance()) ? '': $User->advance()->format(),
