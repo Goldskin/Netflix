@@ -2,6 +2,7 @@
     <thead class="thead-inverse">
         <tr>
             <th>Label</th>
+            <th>Facturé</th>
             <th>Payé</th>
             <th>Restant à payer</th>
             <th>Avance</th>
@@ -12,6 +13,7 @@
         <?php foreach ($resume as $key => $view) : ?>
             <tr>
                 <td><?= $view['name'] ?></td>
+                <td><?= $view['billed'] ?> </td>
                 <td><?= $view['payed'] ?></td>
                 <td><?= $view['unpayed'] ?></td>
                 <td><?= $view['advance']  ?></td>
@@ -22,6 +24,7 @@
     <tfoot>
         <tr>
             <td>Total</td>
+            <td><?= $billed ?></td>
             <td><?= $payed ?></td>
             <td><?= $unpayed ?></td>
             <td colspan="2"><?= $advance ?></td>

@@ -9,7 +9,8 @@ class User extends Main
      */
     public function getPayments ()
     {
-        return $this->getTotals($this->payment());
+        $payements = $this->getTotals($this->payment());
+        return $payements > 0 ? new Price ($payements) : 0;
     }
 
     /**
@@ -18,7 +19,8 @@ class User extends Main
      */
     public function getBills ()
     {
-        return $this->getTotals($this->bill());
+        $bills = $this->getTotals($this->bill());
+        return $bills > 0 ? new Price ($bills) : 0;
     }
 
     /**
@@ -68,26 +70,26 @@ class User extends Main
      */
     public function update ()
     {
-        if ($this->getBills() > 0) {
-            if ($this->admin()) {
-                $this->payed( (new Price ())->set( $this->getBills() ) );
-            } else if ($this->payment()) {
+        if ($this->admin()) {
+            $this->payed( (new Price ())->set( $this->getBills()->get() ) );
+        } else if ($this->payment()) {
 
-                $this->payed( (new Price ())->set( $this->getPayments() ) );
-                $avance  = $this->getPayments() - $this->getBills();
-                $avance  = $avance > 0 ? $avance : 0;
-                $unpayed = $this->getBills() - $this->getPayments();
-                $unpayed = $unpayed > 0 ? $unpayed : 0;
+            $this->payed( (new Price ())->set( $this->getPayments() ) );
+            $avance  = $this->getPayments()->get() - $this->getBills()->get();
+            $avance  = $avance > 0 ? $avance : 0;
+            $unpayed = $this->getBills()->get() - $this->getPayments()->get();
+            $unpayed = $unpayed > 0 ? $unpayed : 0;
 
-                if ($unpayed > 0) {
-                    $this->unpayed( (new Price ())->set($unpayed) );
-                }
-                if ($avance > 0) {
-                    $this->advance( (new Price ())->set($avance) );
-                }
-            } else {
-                $this->unpayed( (new Price ())->set($this->getBills()) );
+            if ($unpayed > 0) {
+                $this->unpayed( (new Price ())->set($unpayed) );
             }
+            if ($avance > 0) {
+                $this->advance( (new Price ())->set($avance) );
+            }
+        } else if ($this->getBills()) {
+            $this->unpayed( (new Price ())->set($this->getBills()->get()) );
         }
+
+        return $this;
     }
 }

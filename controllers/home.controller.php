@@ -14,6 +14,7 @@ class HomeController extends Controller
 
         $views = [];
         $views['resume']  = [];
+        $views['billed']  = new Price ();
         $views['payed']   = new Price ();
         $views['unpayed'] = new Price ();
         $views['advance'] = new Price ();
@@ -24,18 +25,21 @@ class HomeController extends Controller
         {
             if (!is_null($User->payed()) || !is_null($User->unpayed()) || !is_null($User->advance())) {
                 $views['resume'][] = [
-                     'name' => is_null($User->name()) ? '' : $User->name()->get(),
-                     'id' => is_null($User->id()) ? '' : $User->id(),
-                     'payed' => is_null($User->payed()) ? '' : $User->payed()->format(),
-                     'unpayed' => is_null($User->unpayed()) ? '' : $User->unpayed()->format(),
-                     'advance' => is_null($User->advance()) ? '' : $User->advance()->format(),
-                     'url' => is_null($User->id()) ? '#' : URL . '/user/' . $User->id()
+                     'name'    => is_null($User->name())     ? ''  : $User->name()->get(),
+                     'id'      => is_null($User->id())       ? ''  : $User->id(),
+                     'billed'  => is_null($User->getBills()) ? ''  : $User->getBills()->format(),
+                     'payed'   => is_null($User->payed())    ? ''  : $User->payed()->format(),
+                     'unpayed' => is_null($User->unpayed())  ? ''  : $User->unpayed()->format(),
+                     'advance' => is_null($User->advance())  ? ''  : $User->advance()->format(),
+                     'url'     => is_null($User->id())       ? '#' : URL . '/user/' . $User->id()
                 ];
-                is_null($User->payed())   ? 0 : $views['payed']  ->set($User->payed());
-                is_null($User->unpayed()) ? 0 : $views['unpayed']->set($User->unpayed());
-                is_null($User->advance()) ? 0 : $views['advance']->set($User->advance());
+                is_null($User->getBills()) ? 0 : $views['billed'] ->set($User->getBills());
+                is_null($User->payed())    ? 0 : $views['payed']  ->set($User->payed());
+                is_null($User->unpayed())  ? 0 : $views['unpayed']->set($User->unpayed());
+                is_null($User->advance())  ? 0 : $views['advance']->set($User->advance());
             }
         });
+        $views['billed']  = $views['billed'] ->get() == 0 ? '' : $views['billed'] ->format();
         $views['payed']   = $views['payed']  ->get() == 0 ? '' : $views['payed']  ->format();
         $views['unpayed'] = $views['unpayed']->get() == 0 ? '' : $views['unpayed']->format();
         $views['advance'] = $views['advance']->get() == 0 ? '' : $views['advance']->format();
