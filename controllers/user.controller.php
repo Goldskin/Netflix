@@ -12,17 +12,9 @@ class UserController extends Controller
             ->load('options', DATAS_ROOT . '/options.json');
         $Netflix = $Model->get();
 
-        if (!is_numeric($userId) && $userId === 0 ) {
-            return Self::fourOFour();
-        }
-
         $userId = intval($userId);
 
         $User = $Netflix->getId(intval($userId));
-
-        if ($User == null) {
-            return Self::fourOFour();
-        }
 
         $views = [];
 

@@ -182,4 +182,31 @@ class Main
             }
         }
     }
+
+
+    /**
+     * get object id based on name
+     * @param  string $name name
+     * @return User
+     */
+    public function getId ($id, $object = 'user')
+    {
+        $return = null;
+
+
+        if (!$id) {
+            throw new Exception('No id');
+        }
+        Self::each($this->{$object}(), function ($Object) use (&$return, $id) {
+            if ($Object->id() == $id) {
+                $return = $Object;
+                return;
+            }
+        });
+        if (!$return) {
+            throw new Exception('No ' . $object);
+        }
+
+        return $return;
+    }
 }

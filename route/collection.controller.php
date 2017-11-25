@@ -160,7 +160,11 @@ class RouteCollection
         $action     = $this->checkAction($controller, $result[1]->getAction());
         $params     = $this->checkParams($result[0], $result[1]->getParam());
         $params     = $result[1]->getParam() ? array_chunk($result[0], $result[1]->getParam())[0] : [];
+        try {
+            call_user_func_array([$controller, $action], $params);
+        } catch (Exception $e) {
+            call_user_func_array([$controller, 'fourOFour'], []);
+        }
 
-        return call_user_func_array([$controller, $action], $params);
     }
 }

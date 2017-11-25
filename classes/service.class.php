@@ -23,24 +23,6 @@ class Service extends Main
         return $earliest->start();
     }
 
-    /**
-     * get user based on name
-     * @param  string $name name
-     * @return User
-     */
-    public function getId ($id, $object = 'user')
-    {
-        $return = null;
-
-        Self::each($this->user(), function ($User) use (&$return, $id) {
-            if ($User->id() == $id) {
-                $return = $User;
-                return;
-            }
-        });
-
-        return $return;
-    }
 
     /**
      * return all actives users at the date
@@ -133,7 +115,7 @@ class Service extends Main
             // get split bill
             $bill = $currentTarif->split($totalUser);
 
-
+            // apply all bills
             $this->applyBill($Users, $bill, $Date);
 
         }
