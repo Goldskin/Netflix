@@ -209,4 +209,30 @@ class Main
 
         return $return;
     }
+
+    /**
+     * get last element
+     * @param  string $object
+     * @return object
+     */
+    public function getLast($object = 'user')
+    {
+        if (is_array($this->{$object})) {
+            return end($this->{$object});
+        }
+        return $this->{$object};
+    }
+
+    /**
+     * get last element
+     * @param  string $object
+     * @return object
+     */
+
+    public function getFirst($object = 'user') {
+        if (is_array($this->{$object})) {
+            return $this->{$object}[0];
+        }
+        return $this->{$object};
+    }
 }
