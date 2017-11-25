@@ -26,6 +26,7 @@ class BillController extends Controller
 
             $Bill = $User->getBill($Date);
 
+            // bug if multi line for the same user
             if (is_array($Bill)) {
                 while (count($Bill)) {
                     if (array_search($Bill[0]->id(), $allReadyDisplayed) !== false) {
@@ -55,6 +56,8 @@ class BillController extends Controller
             'total' => $total->format()
         ];
 
-        $this->set($views)->render('index');
+        $this
+            ->set($views)
+            ->add('index');
     }
 }

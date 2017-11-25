@@ -7,6 +7,7 @@ class Controller
     protected $class;
     protected $vars = [];
     protected $layout = false;
+    protected $templates = [];
 
     function __construct($class)
     {
@@ -24,12 +25,17 @@ class Controller
         return $this;
     }
 
+    public function add ($action) {
+        $this->templates = array_merge($this->templates, [$action]);
+        return $this;
+    }
+
     /**
      * render view
      * @param  string $filename [description]
      * @return [type]           [description]
      */
-    protected function render ($action)
+    public function render ()
     {
         extract($this->vars);
 
@@ -37,7 +43,9 @@ class Controller
         require_once VIEWS_ROOT . 'header.view.php';
 
         ob_start();
-        require_once VIEWS_ROOT . strtolower($this->class) . '/' . $action . '.php';
+        foreach ($this->templates as $templates) {
+            require_once VIEWS_ROOT . strtolower($this->class) . '/' . $templates . '.php';
+        }
         $content = ob_get_clean();
 
         // render body

@@ -44,8 +44,8 @@ class HomeController extends Controller
         $views['unpayed'] = $views['unpayed']->get() == 0 ? '' : $views['unpayed']->format();
         $views['advance'] = $views['advance']->get() == 0 ? '' : $views['advance']->format();
 
-        $this->set($views)->render('index');
-
-        // echo "<pre>", var_dump($views), "</pre>";
+        $this
+            ->set($views)
+            ->add('index');
     }
 }

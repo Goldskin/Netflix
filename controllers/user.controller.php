@@ -31,7 +31,11 @@ class UserController extends Controller
              'bill' => $this->getBillHistory($User)
         ];
 
-        $this->set($views)->render('index');
+
+        $this
+            ->set($views)
+            ->add('index')
+            ->history($User);
     }
 
     /**
@@ -39,7 +43,7 @@ class UserController extends Controller
      * @param  [type] $User [description]
      * @return [type]       [description]
      */
-    protected function getBillHistory ($User) {
+    protected function history ($User) {
         $bills = [
             'line'=> [],
             'total'=> new Price (),
@@ -61,6 +65,9 @@ class UserController extends Controller
         $bills['line'] = array_reverse($lines);
 
         $bills['total'] = $bills['total']->get() == 0 ? '' : $bills['total']->format();
-        return $bills;
+        $views['bills'] = $bills;
+        $this
+            ->set($views)
+            ->add('history');
     }
 }
