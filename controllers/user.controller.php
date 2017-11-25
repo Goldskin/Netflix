@@ -45,15 +45,20 @@ class UserController extends Controller
             'total'=> new Price (),
         ];
 
-        Main::each($User->bill(), function ($Bill) use (&$bills)
+        $lines = [];
+        // get all bills
+        Main::each($User->bill(), function ($Bill) use (&$bills, &$lines)
         {
-            $bills['line'][] = [
+            $lines[] = [
                 'price' => $Bill->format(),
                 'date' => $Bill->date()->format('d/m/Y'),
                 'url' => URL . '/bill/' . $Bill->date()->format('Ymd')
             ];
             $bills['total']->set($Bill);
         });
+
+        // return array ti have lastest bills
+        $bills['line'] = array_reverse($lines);
 
         $bills['total'] = $bills['total']->get() == 0 ? '' : $bills['total']->format();
         return $bills;
