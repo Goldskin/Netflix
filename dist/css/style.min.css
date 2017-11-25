@@ -10,10 +10,11 @@ h1 {
 }
 
 body {
-
     background: #141414;
+    font-family: Roboto;
 }
-body *:not(.xdebug-error) {
+
+*:not(.xdebug-error) {
     color: #fff;
 }
 
@@ -57,4 +58,13 @@ table:not(.xdebug-error) thead {
 
 .no-marg {
     margin: 0;
+}
+.payed {
+    color: #49ff01;
+}
+.unpayed {
+    color: #cc4b37;
+}
+.paying {
+    color: #ffae00;
 }
