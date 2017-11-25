@@ -45,6 +45,10 @@ class Interval extends Main
         $start = !isset($this->start) ? new Date () : clone $this->start;
         $end   = !isset($this->end) ? new Date () : clone $this->end;
 
+        if ($start > $end) {
+            return 0;
+        }
+
         $date  = $start->diff($end);
         $total = $date->days;
 
