@@ -24,6 +24,16 @@ class User extends Main
     }
 
     /**
+     * get all the bills
+     * @return int|float
+     */
+    public function getAdvanced ()
+    {
+        $adv = $this->getTotals($this->advanced());
+        return $adv > 0 ? new Price ($adv) : 0;
+    }
+
+    /**
      * get a specifique bill
      * @return int|float
      */

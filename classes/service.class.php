@@ -31,7 +31,7 @@ class Service extends Main
      */
     public function getActiveUsers (Date $Date = null)
     {
-        $Date = is_null($Date) ? $this->getStart() : $Date;
+        $Date = is_null($Date) ? new Date () : $Date;
         $totalUser = [];
 
         Self::each($this->user(), function ($User) use (&$totalUser, $Date)
@@ -53,9 +53,9 @@ class Service extends Main
      * @param  Date  $dateCurrent
      * @return object|null tarif
      */
-    public function getActiveTarif ($dateCurrent)
+    public function getActiveTarif ($dateCurrent = null)
     {
-        $dateCurrent = is_null($dateCurrent) ? $this->getStart() : $dateCurrent;
+        $dateCurrent = is_null($dateCurrent) ? new Date ()  : $dateCurrent;
         $currentTarif = null;
 
         // Calc right price for current month
@@ -96,7 +96,6 @@ class Service extends Main
         $Duration = (new Interval ())->start($Start);
         $this->rotation = 0;
         $free = $this->free()->get();
-
 
         for ($currentMonth = !is_null($free) ? $free : 0; $currentMonth <= $Duration->month(); $currentMonth++) {
 
@@ -142,7 +141,12 @@ class Service extends Main
 
         // applying bills
         foreach ($Users as $key => $User) {
-            $User->bill( (new Price ())->set($bill[$this->rotation])->date($Date) );
+            $price = (new Price ())->set($bill[$this->rotation])->date($Date);
+
+            $price->status($this->applyStatus($User, $bill[$this->rotation]));
+
+            $User->bill( $price );
+
             $this->rotation++;
             if ($this->rotation == $totalUser ) {
                 $this->rotation = 0;
@@ -232,6 +236,7 @@ class Service extends Main
                 foreach ($Data->payed as $Payment) {
                     $User->payment( (new Price ())->set( $Payment->price )->date( $Payment->date ) );
                 }
+                $User->advanced( (new Price ())->set($User->payment()->total()) );
             }
 
             // add user
