@@ -40,9 +40,12 @@ class BillController extends Controller
             }
 
             $Bills[] = [
-                'user' => $User->name()->get(),
-                'bill' => $Bill->format(),
-                'url'  => (is_null($User->id()) ? '#' : URL . '/user/' . $User->id())
+                'user'  => $User->name()->get(),
+                'price' => [
+                    'value' => $Bill->format(),
+                    'class' => Price::getStatus($Bill->status()->get())
+                ],
+                'url'   => (is_null($User->id()) ? '#' : URL . '/user/' . $User->id())
             ];
 
             $total->set($Bill);

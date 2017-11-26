@@ -13,7 +13,7 @@
             <?php foreach ($lines as $line) : ?>
                 <tr>
                     <td><?= $line['user'] ?></td>
-                    <td><?= $line['bill'] ?></td>
+                    <td class="<?= $line['price']['class'] ?>"><?= $line['price']['value'] ?></td>
                     <td class="text-right"><a class="button alert no-marg" href="<?= $line['url'] ?>">Utilisateur</a></td>
                 </tr>
             <?php endforeach; ?>
