@@ -32,8 +32,6 @@ class UserController extends Controller
             'class' => is_null($User->payed()) ? '' : Price::getStatus($User->payed()->status()->get())
         ];
 
-
-
         $views['user']['unpayed'] = [
             'value' => is_null($User->unpayed()) ? '' : $User->unpayed()->format(),
             'class' => is_null($User->unpayed()) ? '' : Price::getStatus($User->unpayed()->status()->get())
@@ -54,7 +52,7 @@ class UserController extends Controller
     /**
      * get layout historique
      * @param  User $User user needed
-     * @return        [description]
+     * @return void
      */
     protected function history ($User) {
         $bills = [
@@ -67,7 +65,10 @@ class UserController extends Controller
         Main::each($User->bill(), function ($Bill) use (&$bills, &$lines)
         {
             $lines[] = [
-                'price' => $Bill->format(),
+                'price' => [
+                    'value' => $Bill->format(),
+                    'class' => Price::getStatus($Bill->status()->get()),
+                ],
                 'date' => $Bill->date()->format('d/m/Y'),
                 'url' => URL . '/bill/' . $Bill->date()->format('Ymd')
             ];

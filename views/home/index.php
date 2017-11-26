@@ -24,10 +24,10 @@
     <tfoot>
         <tr>
             <td>Total</td>
-            <td><?= $billed ?></td>
-            <td><?= $payed ?></td>
-            <td class="unpayed"><?= $unpayed ?></td>
-            <td colspan="2" class="payed"><?= $advance ?></td>
+            <td class="<?= $billed['class'] ?>"><?= $billed['value'] ?></td>
+            <td class="<?= $payed['class'] ?>"><?= $payed['value'] ?></td>
+            <td class="<?= $unpayed['class'] ?>"><?= $unpayed['value'] ?></td>
+            <td class="<?= $advance['class'] ?>" colspan="2"><?= $advance['value'] ?></td>
         </tr>
     </tfoot>
 </table>

@@ -12,7 +12,7 @@
             <?php foreach ($bills['line'] as $bill) : ?>
                 <tr>
                     <td><?= $bill['date'] ?></td>
-                    <td><?= $bill['price'] ?></td>
+                    <td class="<?= $bill['price']['class'] ?>"><?= $bill['price']['value'] ?></td>
                     <td class="text-right"><a class="button alert no-marg" href="<?= $bill['url'] ?>">Facture</a></td>
                 </tr>
             <?php endforeach; ?>

@@ -72,10 +72,43 @@ class HomeController extends Controller
                 }
             }
         });
-        $views['billed']  = $views['billed'] ->get() == 0 ? '' : $views['billed'] ->format();
-        $views['payed']   = $views['payed']  ->get() == 0 ? '' : $views['payed']  ->format();
-        $views['unpayed'] = $views['unpayed']->get() == 0 ? '' : $views['unpayed']->format();
-        $views['advance'] = $views['advance']->get() == 0 ? '' : $views['advance']->format();
+
+        $tarif  = $Netflix->getActiveTarif()->total();
+        $payed  = $views['payed']->total();
+        $billed = $views['billed']->total();
+        $diff   = $billed - $payed;
+
+        if ($diff < 0) {
+            $class = Price::getStatus(Price::advance);
+        } else if ($diff > 0) {
+            if ($diff > $tarif) {
+                $class = Price::getStatus(Price::unpayed);
+            } else {
+                $class = Price::getStatus(Price::paying);
+            }
+        } else {
+            $class = Price::getStatus(Price::payed);
+        }
+
+        $views['billed']  = [
+            'value' => $billed == 0 ? '' : $views['billed'] ->format(),
+            'class' => ''
+        ];
+
+        $views['payed']   = [
+            'value' => $payed == 0 ? '' : $views['payed']  ->format(),
+            'class' => $class
+        ];
+
+        $views['unpayed'] = [
+            'value' => $views['unpayed']->total() == 0 ? '' : $views['unpayed']->format(),
+            'class' => $views['unpayed']->total() > $tarif ? Price::getStatus(Price::unpayed) : Price::getStatus(Price::paying)
+        ];
+
+        $views['advance'] = [
+            'value' => $views['advance']->total() == 0 ? '' : $views['advance']->format(),
+            'class' => Price::getStatus(Price::advance)
+        ];
 
         $this
             ->set($views)
