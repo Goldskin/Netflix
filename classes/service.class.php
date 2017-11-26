@@ -130,8 +130,8 @@ class Service extends Main
      * @return object
      */
 
-    protected function applyBill ($Users, $bill, $Date) {
-
+    protected function applyBill ($Users, $bill, $Date)
+    {
         $totalUser  = count($Users);
 
         // number of price diff
@@ -141,10 +141,9 @@ class Service extends Main
 
         // applying bills
         foreach ($Users as $key => $User) {
+
             $price = (new Price ())->set($bill[$this->rotation])->date($Date);
-
             $price->status($this->applyStatus($User, $bill[$this->rotation]));
-
             $User->bill( $price );
 
             $this->rotation++;
@@ -163,10 +162,21 @@ class Service extends Main
         return $this;
     }
 
-    public function applyStatus ($User, $price) {
+    /**
+     * get status
+     * @param  User $User  user t0 check
+     * @param  int $price  Price to sub
+     * @return int         status
+     */
+    public function applyStatus ($User, $price)
+    {
+        // if user is admin, he's always paying
         if ($User->admin()) {
             $return = Price::payed;
-        } else if ($User->getAdvanced()) {
+        }
+
+        // if user all ready payed, check the current statement of payment
+        else if ($User->getAdvanced()) {
             if ($User->getAdvanced()->total() > 0 && $price > $User->getAdvanced()->total()) {
                 $return = Price::paying;
             } else if ($User->getAdvanced()->total() < 0 ) {
@@ -175,9 +185,13 @@ class Service extends Main
                 $return = Price::payed;
             }
             $User->advanced( (new Price ())->set(-$price) );
-        } else {
+        }
+
+        // if user is actif but hasn't payed yet
+        else {
             $return = Price::unpayed;
         }
+
         return $return;
     }
 
@@ -186,7 +200,8 @@ class Service extends Main
      * @param  array $tarifs all tarifs
      * @return object
      */
-    public function createTarif ($tarifs) {
+    public function createTarif ($tarifs)
+    {
         foreach ($tarifs as $Data) {
             $Interval = (new Interval ())->start($Data->start);
 
@@ -207,7 +222,8 @@ class Service extends Main
      * @param  array $user all users
      * @return object
      */
-    public function createUser ($user) {
+    public function createUser ($user)
+    {
         foreach ($user as $Data) {
             $User = (new User ())->name($Data->name);
 
@@ -251,7 +267,8 @@ class Service extends Main
      * @param  array $options options
      * @return object
      */
-    public function createOptions ($options) {
+    public function createOptions ($options)
+    {
         $options = get_object_vars($options);
         foreach ($options as $key => $value) {
             $this->{$key}($value);
