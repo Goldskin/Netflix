@@ -14,7 +14,7 @@
                 <tr>
                     <td><?= $line['user'] ?></td>
                     <td><?= $line['bill'] ?></td>
-                    <td class="text-right"><a class="button alert no-marg" href="<?= $line['url'] ?>">Utilisateur</td>
+                    <td class="text-right"><a class="button alert no-marg" href="<?= $line['url'] ?>">Utilisateur</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

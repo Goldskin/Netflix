@@ -13,7 +13,7 @@
                 <tr>
                     <td><?= $bill['date'] ?></td>
                     <td><?= $bill['price'] ?></td>
-                    <td class="text-right"><a class="button alert no-marg" href="<?= $bill['url'] ?>">Facture</td>
+                    <td class="text-right"><a class="button alert no-marg" href="<?= $bill['url'] ?>">Facture</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
