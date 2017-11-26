@@ -159,6 +159,24 @@ class Service extends Main
         return $this;
     }
 
+    public function applyStatus ($User, $price) {
+        if ($User->admin()) {
+            $return = Price::payed;
+        } else if ($User->getAdvanced()) {
+            if ($User->getAdvanced()->total() > 0 && $price > $User->getAdvanced()->total()) {
+                $return = Price::paying;
+            } else if ($User->getAdvanced()->total() < 0 ) {
+                $return = Price::unpayed;
+            } else {
+                $return = Price::payed;
+            }
+            $User->advanced( (new Price ())->set(-$price) );
+        } else {
+            $return = Price::unpayed;
+        }
+        return $return;
+    }
+
     /**
      * add all tarifs
      * @param  array $tarifs all tarifs

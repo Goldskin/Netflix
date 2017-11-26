@@ -51,13 +51,25 @@ class HomeController extends Controller
                     'class' => is_null($User->advance())  ? ''  : Price::getStatus($User->advance()->status()->get())
                 ];
 
-
                 $views['users'][] = $current;
 
-                is_null($User->getBills()) ? 0 : $views['billed'] ->set($User->getBills());
-                is_null($User->payed())    ? 0 : $views['payed']  ->set($User->payed());
-                is_null($User->unpayed())  ? 0 : $views['unpayed']->set($User->unpayed());
-                is_null($User->advance())  ? 0 : $views['advance']->set($User->advance());
+
+                // add to totals
+                if (!is_null($User->getBills())) {
+                    $views['billed'] ->set($User->getBills());
+                }
+
+                if (!is_null($User->payed())) {
+                    $views['payed']->set($User->payed());
+                }
+
+                if (!is_null($User->unpayed())) {
+                    $views['unpayed']->set($User->unpayed());
+                }
+
+                if (!is_null($User->advance())) {
+                    $views['advance']->set($User->advance());
+                }
             }
         });
         $views['billed']  = $views['billed'] ->get() == 0 ? '' : $views['billed'] ->format();

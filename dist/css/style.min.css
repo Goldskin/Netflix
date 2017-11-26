@@ -59,12 +59,15 @@ table:not(.xdebug-error) thead {
 .no-marg {
     margin: 0;
 }
-.payed {
+
+.advance {
     color: #49ff01;
 }
+
 .unpayed {
     color: #cc4b37;
 }
+
 .paying {
     color: #ffae00;
 }

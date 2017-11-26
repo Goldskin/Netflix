@@ -39,7 +39,6 @@ class BillController extends Controller
                 }
             }
 
-
             $Bills[] = [
                 'user' => $User->name()->get(),
                 'bill' => $Bill->format(),

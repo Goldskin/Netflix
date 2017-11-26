@@ -2,10 +2,10 @@
 
 class Price extends Main
 {
-    const none    = 0;
-    const payed   = 1;
-    const paying  = 2;
-    const unpayed = 3;
+    const unpayed  = 0;
+    const paying   = 1;
+    const payed    = 2;
+    const advance = 3;
 
     /**
      * round up or down the current price
@@ -103,6 +103,9 @@ class Price extends Main
     static public function getStatus ($code)
     {
         switch ($code) {
+            case Price::advance:
+                return 'advance';
+                break;
             case Price::payed:
                 return 'payed';
                 break;
