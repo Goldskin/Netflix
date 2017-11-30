@@ -117,7 +117,7 @@ class User extends Main
             }
 
         } else if ($this->getBills()) {
-            $this->unpayed( (new Price ())->set($this->getBills()->get())->status(Price::paying) );
+            $this->unpayed( (new Price ())->set($this->getBills()->get())->status(Price::unpayed) );
         }
 
         return $this;
