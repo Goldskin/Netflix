@@ -6,7 +6,7 @@ class Interval extends Main
      * @param  string|Date $date Starting date
      * return Class
      */
-    public function start ($date = null)
+    public function start($date = null)
     {
         return $this->date($date, 'start');
     }
@@ -16,7 +16,7 @@ class Interval extends Main
      * @param  string|Date $date Starting date
      * return Class
      */
-    public function end ($date = null)
+    public function end($date = null)
     {
         return $this->date($date, 'end');
     }
@@ -25,7 +25,7 @@ class Interval extends Main
      * get month since
      * @return int days number
      */
-    public function month ()
+    public function month()
     {
         $start = !isset($this->start) ? new Date () : clone $this->start;
         $end   = !isset($this->end) ? new Date () : clone $this->end;
@@ -40,7 +40,7 @@ class Interval extends Main
      * get days since
      * @return int days number
      */
-    public function days ()
+    public function days()
     {
         $start = !isset($this->start) ? new Date () : clone $this->start;
         $end   = !isset($this->end) ? new Date () : clone $this->end;
@@ -61,7 +61,7 @@ class Interval extends Main
      * @param  callback $callback
      * @return boolean
      */
-    public function between (Date $Date, $callback = null)
+    public function between(Date $Date, $callback = null)
     {
         $started     = $this->start()->format('Ymd') <= $Date->format('Ymd');
         $notFinished = is_null($this->end()) ? true : $this->end()->format('Ymd') > $Date->format('Ymd');

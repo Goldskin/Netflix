@@ -33,7 +33,7 @@ class Main
      * @param  array $param  all the params
      * @return mixed
      */
-    public function __call ($method, $param)
+    public function __call($method, $param)
     {
         $className = ucfirst(strtolower($method));
         $param = self::arrayOut($param);
@@ -60,7 +60,7 @@ class Main
      * @param mixed       $value can be anything
      * @param string|null $var   var name
      */
-    public function set ($value, $var = null)
+    public function set($value, $var = null)
     {
         // if is the same object, extract value and store it
         if (is_object($value) && get_class($value) == get_called_class()) {
@@ -84,8 +84,9 @@ class Main
 
     /**
      * reset data value
+     * @return object
      */
-    public function reset ()
+    public function reset()
     {
         $var = $this->className($var);
 
@@ -148,8 +149,9 @@ class Main
 
     /**
      * specifique behevior
-     * @param  array  $param parameters
-     * @param  string $var  var name
+     * @param array  $param parameters
+     * @param string $var  var name
+     * @return mixed
      */
     public function date ($param = null, $var = 'date')
     {
@@ -189,7 +191,7 @@ class Main
      * @param  string $name name
      * @return User
      */
-    public function getId ($id, $object = 'user')
+    public function getId($id, $object = 'user')
     {
         $return = null;
 

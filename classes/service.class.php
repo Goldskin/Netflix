@@ -6,7 +6,7 @@ class Service extends Main
      * get the befinning
      * @return Date
      */
-    public function getStart ()
+    public function getStart()
     {
         $earliest = null;
 
@@ -23,13 +23,12 @@ class Service extends Main
         return $earliest->start();
     }
 
-
     /**
      * return all actives users at the date
      * @param  Date $dateCurrent
      * @return array User
      */
-    public function getActiveUsers (Date $Date = null)
+    public function getActiveUsers(Date $Date = null)
     {
         $Date = is_null($Date) ? new Date () : $Date;
         $totalUser = [];
@@ -53,7 +52,7 @@ class Service extends Main
      * @param  Date  $dateCurrent
      * @return object|null tarif
      */
-    public function getActiveTarif ($dateCurrent = null)
+    public function getActiveTarif($dateCurrent = null)
     {
         $dateCurrent = is_null($dateCurrent) ? new Date ()  : $dateCurrent;
         $currentTarif = null;
@@ -76,7 +75,7 @@ class Service extends Main
      * update service status
      * @return object
      */
-    public function update ()
+    public function update()
     {
         Self::each($this->user(), function ($User)
         {
@@ -130,7 +129,7 @@ class Service extends Main
      * @return object
      */
 
-    protected function applyBill ($Users, $bill, $Date)
+    protected function applyBill($Users, $bill, $Date)
     {
         $totalUser  = count($Users);
 
@@ -168,7 +167,7 @@ class Service extends Main
      * @param  int $price  Price to sub
      * @return int         status
      */
-    public function applyStatus ($User, $price)
+    public function applyStatus($User, $price)
     {
         // if user is admin, he's always paying
         if ($User->admin()) {
@@ -200,7 +199,7 @@ class Service extends Main
      * @param  array $tarifs all tarifs
      * @return object
      */
-    public function createTarif ($tarifs)
+    public function createTarif($tarifs)
     {
         foreach ($tarifs as $Data) {
             $Interval = (new Interval ())->start($Data->start);
@@ -222,7 +221,7 @@ class Service extends Main
      * @param  array $user all users
      * @return object
      */
-    public function createUser ($user)
+    public function createUser($user)
     {
         foreach ($user as $Data) {
             $User = (new User ())->name($Data->name);
@@ -267,7 +266,7 @@ class Service extends Main
      * @param  array $options options
      * @return object
      */
-    public function createOptions ($options)
+    public function createOptions($options)
     {
         $options = get_object_vars($options);
         foreach ($options as $key => $value) {

@@ -7,7 +7,7 @@ class User extends Main
      * Get all the payements
      * @return int|float
      */
-    public function getPayments ()
+    public function getPayments()
     {
         $payements = $this->getTotals($this->payment());
         return $payements > 0 ? new Price ($payements) : 0;
@@ -17,7 +17,7 @@ class User extends Main
      * get all the bills
      * @return int|float
      */
-    public function getBills ()
+    public function getBills()
     {
         $bills = $this->getTotals($this->bill());
         return $bills > 0 ? new Price ($bills) : 0;
@@ -27,7 +27,7 @@ class User extends Main
      * get all the bills
      * @return int|float
      */
-    public function getAdvanced ()
+    public function getAdvanced()
     {
         $adv = $this->getTotals($this->advanced());
         return $adv > 0 ? new Price ($adv) : 0;
@@ -37,7 +37,7 @@ class User extends Main
      * get a specifique bill
      * @return int|float
      */
-    public function getBill (Date $Date)
+    public function getBill(Date $Date)
     {
         $return = null;
 
@@ -63,7 +63,7 @@ class User extends Main
      * @param  object $Objs
      * @return int|mixed price
      */
-    public function getTotals ($Objs)
+    public function getTotals($Objs)
     {
         $Prices = new Price();
 
@@ -78,7 +78,7 @@ class User extends Main
      * update service
      * @return void
      */
-    public function update ()
+    public function update()
     {
         if ($this->admin()) {
             $this->payed( (new Price ())->set( $this->getBills()->get() )->status(Price::payed) );

@@ -12,7 +12,7 @@ class Price extends Main
      * @param  int|float $difference price
      * @return int                   price
      */
-    static function rounder ($difference)
+    static function rounder($difference)
     {
         if ($difference > 0) {
             $difference = ceil( ($difference) * 100) / 100;
@@ -26,7 +26,7 @@ class Price extends Main
      * add to current price
      * @return mixed
      */
-    public function total ()
+    public function total()
     {
         $val = $this->get();
         if (is_array($val)) {
@@ -40,7 +40,7 @@ class Price extends Main
      * @param  string $currency code html
      * @return string           price
      */
-    public function format ($currency = '&euro;')
+    public function format($currency = '&euro;')
     {
         return number_format ( $this->total() , 2 ,  "," ," " ) . ' ' . $currency;
     }
@@ -50,7 +50,7 @@ class Price extends Main
      * @param  [type] $split [description]
      * @return [type]        [description]
      */
-    public function split ($split)
+    public function split($split)
     {
         // get approximative price and apply to each one
         $repartitionAprox = Self::rounder($this->get() / $split);
@@ -100,7 +100,7 @@ class Price extends Main
      * format to specific class
      * @var [type]
      */
-    static public function getStatus ($code)
+    static public function getStatus($code)
     {
         switch ($code) {
             case Price::advance:
