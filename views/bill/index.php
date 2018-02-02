@@ -1,5 +1,6 @@
 <h1 class="text-center">Facture du <?= $date ?></h1>
 <a class="button alert" href="<?= '//' . $_SERVER['HTTP_HOST'] . WEBROOT ?>">&larr; Retour</a>
+<a class="button alert" href="<?= '//www.netflix.com' ?>">Aller sur Netflix</a>
 <?php if (!empty($lines)): ?>
     <table class="table ">
         <thead class="thead-inverse">

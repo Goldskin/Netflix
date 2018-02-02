@@ -1,3 +1,4 @@
+<a class="button alert" href="<?= '//www.netflix.com' ?>">Aller sur Netflix</a>
 <table class="table ">
     <thead class="thead-inverse">
         <tr>
