@@ -1,16 +1,12 @@
 <?php
 
 require_once MODELS_ROOT . 'service.model.php';
+require_once CONTROLLERS_ROOT . 'all.php';
 class HomeController extends Controller
 {
 
     public function index ($userId = 0) {
-        $Model = new serviceModel ();
-        $Model
-            ->load('user',    DATAS_ROOT . '/user.json')
-            ->load('price',   DATAS_ROOT . '/price.json')
-            ->load('options', DATAS_ROOT . '/options.json');
-        $Netflix = $Model->get();
+        $ServiceModel = (new serviceModel ())->getModel();
 
         $views = [];
         $views['users']  = [];
@@ -18,10 +14,11 @@ class HomeController extends Controller
         $views['payed']   = new Price ();
         $views['unpayed'] = new Price ();
         $views['advance'] = new Price ();
+        $views['titles']['page'] = (is_null($ServiceModel->options()->name())
+            ? 'Repartition'
+            : $ServiceModel->options()->name()->get()) . ' - Accueil';
 
-        $views['title'] = (is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get()) . ' - Home';
-
-        $Netflix::each($Netflix->user(), function ($User) use (&$views)
+        $ServiceModel::each($ServiceModel->user(), function ($User) use (&$views)
         {
 
             if (!is_null($User->payed()) || !is_null($User->unpayed()) || !is_null($User->advance())) {
@@ -73,7 +70,7 @@ class HomeController extends Controller
             }
         });
 
-        $tarif  = $Netflix->getActiveTarif()->total();
+        $tarif  = $ServiceModel->getActiveTarif()->total();
         $payed  = $views['payed']->total();
         $billed = $views['billed']->total();
         $diff   = $billed - $payed;
@@ -109,6 +106,8 @@ class HomeController extends Controller
             'value' => $views['advance']->total() == 0 ? '' : $views['advance']->format(),
             'class' => Price::getStatus(Price::advance)
         ];
+
+        $views['options'] = getHeader($ServiceModel);
 
         $this
             ->set($views)

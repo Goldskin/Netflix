@@ -1,6 +1,3 @@
-<h1 class="text-center">Facture du <?= $date ?></h1>
-<a class="button alert" href="<?= '//' . $_SERVER['HTTP_HOST'] . WEBROOT ?>">&larr; Retour</a>
-<a class="button alert" href="<?= '//www.netflix.com' ?>">Aller sur Netflix</a>
 <?php if (!empty($lines)): ?>
     <table class="table ">
         <thead class="thead-inverse">
@@ -15,7 +12,7 @@
                 <tr>
                     <td><?= $line['user'] ?></td>
                     <td class="<?= $line['price']['class'] ?>"><?= $line['price']['value'] ?></td>
-                    <td class="text-right"><a class="button alert no-marg" href="<?= $line['url'] ?>">Utilisateur</a></td>
+                    <td class="text-right"><a class="button main-color no-marg" href="<?= $line['url'] ?>">Utilisateur</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

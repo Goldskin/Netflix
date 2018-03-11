@@ -1,4 +1,3 @@
-<a class="button alert" href="<?= '//www.netflix.com' ?>">Aller sur Netflix</a>
 <table class="table ">
     <thead class="thead-inverse">
         <tr>
@@ -18,7 +17,7 @@
                 <td class="<?= $user['payed']['class'] ?>"><?= $user['payed']['value'] ?></td>
                 <td class="<?= $user['unpayed']['class'] ?>"><?= $user['unpayed']['value'] ?></td>
                 <td class="<?= $user['advance']['class'] ?>"><?= $user['advance']['value']  ?></td>
-                <td class="text-right"><a class="button alert no-marg text-right" href="<?= $user['url']  ?>">Détails</a></td>
+                <td class="text-right"><a class="button main-color no-marg text-right" href="<?= $user['url']  ?>">Détails</a></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

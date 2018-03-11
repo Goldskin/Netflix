@@ -5,7 +5,8 @@ const classes = [
     'price',
     'user',
     'date',
-    'service'
+    'service',
+    'options'
 ];
 
 foreach (classes as $class) {
@@ -39,7 +40,6 @@ class Main
         $param = self::arrayOut($param);
         return $this->call($className, $method, $param);
     }
-
 
     /**
      * if the array contains one element, extract it
@@ -184,7 +184,6 @@ class Main
             }
         }
     }
-
 
     /**
      * get object id based on name

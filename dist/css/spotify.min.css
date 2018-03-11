@@ -30,7 +30,7 @@ table:not(.xdebug-error) thead {
 }
 
 body table:not(.xdebug-error) thead {
-    border-bottom-color: red;
+    border-bottom-color: #1ED760;
 }
 
 body table:not(.xdebug-error) tbody {
@@ -42,7 +42,7 @@ table:not(.xdebug-error) tr {
 }
 
 body table:not(.xdebug-error) tfoot {
-    border-top-color: red;
+    border-top-color: #1ED760;
 }
 
 table:not(.xdebug-error) tbody tr:nth-child(even) {
@@ -70,4 +70,13 @@ table:not(.xdebug-error) thead {
 
 .paying {
     color: #ffae00;
+}
+
+.button.main-color:focus, .button.main-color:hover {
+    background-color: #17c154;
+    color: #000000;
+}
+.button.main-color {
+    background-color: #1ED760;
+    color: #000000;
 }

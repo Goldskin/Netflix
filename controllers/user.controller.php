@@ -1,26 +1,18 @@
 <?php
 
 require_once MODELS_ROOT . 'service.model.php';
+require_once CONTROLLERS_ROOT . 'all.php';
 class UserController extends Controller
 {
 
     public function index ($userId = 0) {
-        $Model = new serviceModel ();
-        $Model
-            ->load('user',    DATAS_ROOT . '/user.json')
-            ->load('price',   DATAS_ROOT . '/price.json')
-            ->load('options', DATAS_ROOT . '/options.json');
-        $Netflix = $Model->get();
+        $ServiceModel = (new serviceModel ())->getModel();
 
         $userId = intval($userId);
 
-        $User = $Netflix->getId(intval($userId));
+        $User = $ServiceModel->getId(intval($userId));
 
         $views = [];
-
-        $views['title'] = is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get() . ' - ' . $User->name()->get();
-
-        $views['user']['name']    = is_null($User->name())     ? '': $User->name()->get();
 
         $views['user']['billed']  = [
             'value' => is_null($User->getBills()) ? '': $User->getBills()->format(),
@@ -42,6 +34,15 @@ class UserController extends Controller
             'class' => is_null($User->advance()) ? '' : Price::getStatus($User->advance()->status()->get())
         ];
 
+        $views['options'] = getHeader($ServiceModel);
+
+        $views['titles'] = [
+            'page' => (is_null($ServiceModel->options()->name())
+                ? 'Repartition'
+                : $ServiceModel->options()->name()->get()) . ' - ' . $User->name()->get(),
+            'header1' => is_null($User->name())     ? '': $User->name()->get(),
+            'header2' => 'Résumé'
+        ];
 
         $this
             ->set($views)

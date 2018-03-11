@@ -1,7 +1,3 @@
-<h1 class="text-center"><?= $user['name'] ?></h1>
-<h2 class="text-center">Résumé</h2>
-<a class="button alert" href="<?= '//' . $_SERVER['HTTP_HOST'] . WEBROOT ?>">&larr; Retour</a>
-<a class="button alert" href="<?= '//www.netflix.com' ?>">Aller sur Netflix</a>
 <table class="table">
     <thead class="thead-inverse">
         <tr>

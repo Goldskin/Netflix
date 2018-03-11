@@ -1,22 +1,16 @@
 <?php
 
 require_once MODELS_ROOT . 'service.model.php';
+require_once CONTROLLERS_ROOT . 'all.php';
 class BillController extends Controller
 {
-
-    public function index ($date = null) {
-        $Model = new serviceModel ();
-        $Model
-            ->load('user',    DATAS_ROOT . '/user.json')
-            ->load('price',   DATAS_ROOT . '/price.json')
-            ->load('options', DATAS_ROOT . '/options.json');
-        $Netflix = $Model->get();
+    public function index ($date = null)
+    {
+        $ServiceModel = (new serviceModel ())->getModel();
 
         $Date = new Date ($date);
 
-
-
-        $Users = $Netflix->getActiveUsers($Date);
+        $Users = $ServiceModel->getActiveUsers($Date);
         $Bills = [];
         $total = new Price ();
 
@@ -52,11 +46,17 @@ class BillController extends Controller
         }
 
         $views = [
-            'title' => (is_null($Netflix->name()) ? 'Repartition' : $Netflix->name()->get()) . ' - Facture du ' . $Date->format('d/m/Y'),
+            'titles' => [
+                'page' => (is_null($ServiceModel->options()->name())
+                    ? 'Repartition'
+                    : $ServiceModel->options()->name()->get()) . ' - Facture du ' . $Date->format('d/m/Y'),
+                'header1' => 'Facture du ' . $Date->format('d/m/Y') ,
+            ],
             'lines' => $Bills,
-            'date' => $Date->format('d/m/Y'),
             'total' => $total->format()
         ];
+
+        $views['options'] = getHeader($ServiceModel);
 
         $this
             ->set($views)

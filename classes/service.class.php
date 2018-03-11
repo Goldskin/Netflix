@@ -94,7 +94,7 @@ class Service extends Main
         $Start = $this->getStart();
         $Duration = (new Interval ())->start($Start);
         $this->rotation = 0;
-        $free = $this->free()->get();
+        $free = $this->options()->free()->get();
 
         for ($currentMonth = !is_null($free) ? $free : 0; $currentMonth <= $Duration->month(); $currentMonth++) {
 
@@ -268,10 +268,8 @@ class Service extends Main
      */
     public function createOptions($options)
     {
-        $options = get_object_vars($options);
-        foreach ($options as $key => $value) {
-            $this->{$key}($value);
-        }
+        $this->options((new Options())->createOptions($options));
+
         return $this;
     }
 }

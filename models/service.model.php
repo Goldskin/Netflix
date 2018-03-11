@@ -6,7 +6,7 @@ require_once CLASSES_ROOT . 'main.class.php';
 class serviceModel
 {
 
-    public function load ($type, $file) {
+    protected function load ($type, $file) {
         $this->$type = file_get_contents($file);
         return $this;
     }
@@ -15,7 +15,7 @@ class serviceModel
      * get model
      * @return Service get netflix
      */
-    public function get ()
+    protected function get ()
     {
         $user    = json_decode($this->user);
         $tarif   = json_decode($this->price);
@@ -24,6 +24,7 @@ class serviceModel
         // creat new service
         $Service = new Service ();
 
+        // get options
         $Service->createOptions($options);
 
         // add all users
@@ -36,5 +37,18 @@ class serviceModel
         $Service->createBills();
 
         return $Service;
+    }
+
+    /**
+     * load model
+     * @return Service current service
+     */
+    public function getModel () {
+        $Model = new serviceModel ();
+        $Model
+            ->load('user',    DATAS_ROOT . '/user.json')
+            ->load('price',   DATAS_ROOT . '/price.json')
+            ->load('options', DATAS_ROOT . '/options.json');
+        return $Model->get();
     }
 }
