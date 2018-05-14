@@ -17,15 +17,29 @@ class Main
 {
 
     public static $counter = 0;
+    public static $all = [];
 
     function __construct($param = null)
     {
+        $this->setId();
+        
         if($param != null && !is_object($param)) {
             $this->set($param);
         }
+    }
 
-        self::$counter++;
-        $this->id = self::$counter;
+    private function setId () {
+        $this->id = Self::newId(); 
+    }
+
+    public static function newId () {
+        $id = self::$counter;
+        self::$counter++; 
+        return $id;
+    }
+
+    public static function storeId($value, $id) {
+        static::$all[$id] = $value;
     }
 
     /**
@@ -64,6 +78,7 @@ class Main
     {
         // if is the same object, extract value and store it
         if (is_object($value) && get_class($value) == get_called_class()) {
+            $id = $value->id;            
             $value = $value->get();
         }
 
@@ -71,6 +86,8 @@ class Main
 
         // put val in single var
         // if multiple, tranform into array
+        var_dump($this->id, $value);
+        
         if (isset($this->$var) && !is_array($this->$var)) {
             $this->{$var} = [$this->$var, $value];
         } else if (isset($this->$var) && is_array($this->$var)) {
@@ -78,6 +95,9 @@ class Main
         } else {
             $this->{$var} = $value;
         }
+        Static::storeId($value, $this->id);
+        var_dump($this->id, $value);
+        
 
         return $this;
     }

@@ -7,7 +7,7 @@ class HomeController extends Controller
 
     public function index ($userId = 0) {
         $ServiceModel = (new serviceModel ())->getModel();
-
+        // echo '<pre>', var_export((Main::$all)), '</pre>';
         $views = [];
         $views['users']  = [];
         $views['billed']  = new Price ();
