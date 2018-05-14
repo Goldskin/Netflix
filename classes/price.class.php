@@ -55,7 +55,8 @@ class Price extends Main
      */
     public function format($currency = '&euro;')
     {
-        return number_format(Self::toFloat($this->total()), 2 , ",", " ") . '&nbsp;' . $currency;
+        $price = Self::toFloat($this->total());
+        return number_format($price, 2 , ",", " ") . '&nbsp;' . $currency;
     }
 
     /**
