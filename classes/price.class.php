@@ -31,6 +31,11 @@ class Price extends Main
         return (int) ($price * 100);
     }
 
+    /**
+     * transform current price to float
+     * @param float|int $price price given
+     * @return float
+     */
     static function toFloat($price) {
         return (float) ($price / 100);
     }
