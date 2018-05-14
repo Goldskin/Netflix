@@ -1,0 +1,22 @@
+[{
+    "name": "Charles",
+    "admin": true,
+    "use": [
+        {
+            "start": "2017-11-11"
+        }
+    ]
+}, {
+    "name": "Christine",
+    "use": [
+        {
+            "start": "2017-11-11"
+        }
+    ],
+    "payed": [
+        {
+            "price": 37.47,
+            "date": "2017-09-24"
+        }
+    ]
+}]
