@@ -13,7 +13,7 @@ define('ROUTE',            ROOT . 'route/');
 require_once ROUTE . 'core.controller.php';
 require_once ROUTE . 'collection.controller.php';
 
-$RouteCollection = new RouteCollection ($_GET['p']);
+$RouteCollection = new RouteCollection($_GET['p']);
 
 $RouteCollection
     ->add((new Route ('user'))->param(1)->controller('user')->action('index'))

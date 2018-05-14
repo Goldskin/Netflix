@@ -46,9 +46,9 @@ class serviceModel
     public function getModel () {
         $Model = new serviceModel ();
         $Model
-            ->load('user',    DATAS_ROOT . '/user.json')
-            ->load('price',   DATAS_ROOT . '/price.json')
-            ->load('options', DATAS_ROOT . '/options.json');
+            ->load('user',    DATAS_ROOT . 'user.json')
+            ->load('price',   DATAS_ROOT . 'price.json')
+            ->load('options', DATAS_ROOT . 'options.json');
         return $Model->get();
     }
 }

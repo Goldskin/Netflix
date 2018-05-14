@@ -209,7 +209,10 @@ class Service extends Main
                 $Interval->end($Data->end);
             }
 
-            $Tarif = (new Price ())->set( $Data->price )->interval( $Interval );
+            $Tarif = (new Price ())
+                ->set(Price::toInt($Data->price))
+                ->interval($Interval);
+
             $this->price($Tarif);
         }
 
@@ -221,9 +224,9 @@ class Service extends Main
      * @param  array $user all users
      * @return object
      */
-    public function createUser($user)
+    public function createUser($users)
     {
-        foreach ($user as $Data) {
+        foreach ($users as $Data) {
             $User = (new User ())->name($Data->name);
 
             // add all usages
@@ -249,7 +252,7 @@ class Service extends Main
             // add all payments
             if (isset($Data->payed)) {
                 foreach ($Data->payed as $Payment) {
-                    $User->payment( (new Price ())->set( $Payment->price )->date( $Payment->date ) );
+                    $User->payment( (new Price ())->set( Price::toInt($Payment->price) )->date( $Payment->date ) );
                 }
                 $User->advanced( (new Price ())->set($User->payment()->total()) );
             }

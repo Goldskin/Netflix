@@ -5,21 +5,34 @@ class Price extends Main
     const unpayed  = 0;
     const paying   = 1;
     const payed    = 2;
-    const advance = 3;
+    const advance  = 3;
 
     /**
      * round up or down the current price
      * @param  int|float $difference price
      * @return int                   price
      */
-    static function rounder($difference)
+    static function rounder($price)
     {
-        if ($difference > 0) {
-            $difference = ceil( ($difference) * 100) / 100;
+        if ($price > 0) {
+            $price = ceil($price);
         } else {
-            $difference = floor( ($difference) * 100) / 100;
+            $price = floor($price);
         }
-        return $difference;
+        return (int) $price;
+    }
+
+    /**
+     * transform current price to int
+     * @param float|int $price price given
+     * @return int
+     */
+    static function toInt($price) {
+        return (int) ($price * 100);
+    }
+
+    static function toFloat($price) {
+        return (float) ($price / 100);
     }
 
     /**
@@ -42,13 +55,13 @@ class Price extends Main
      */
     public function format($currency = '&euro;')
     {
-        return number_format ( $this->total() , 2 ,  "," ," " ) . '&nbsp;' . $currency;
+        return number_format(Self::toFloat($this->total()), 2 , ",", " ") . '&nbsp;' . $currency;
     }
 
     /**
-     * split current price the most even possible
-     * @param  [type] $split [description]
-     * @return [type]        [description]
+     * split current price the most evenly possible
+     * @param  int $split split price
+     * @return array      [description]
      */
     public function split($split)
     {
@@ -63,7 +76,7 @@ class Price extends Main
 
         // get the difference between real price and approximative price
         $difference = $this->get() - array_sum($userRepartition);
-        $difference = round($difference * 100) / 100;
+
 
 
         // correct the the approximative price
