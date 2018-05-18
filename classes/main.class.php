@@ -19,13 +19,13 @@ class Main
     public static $counter = 0;
     public static $all = [];
 
-    function __construct($param = null)
+    function __construct()
     {
         $this->setId();
         
-        if($param != null && !is_object($param)) {
-            $this->set($param);
-        }
+        // if($param != null && !is_object($param)) {
+        //     $this->set($param);
+        // }
     }
 
     private function setId () {
@@ -40,6 +40,7 @@ class Main
 
     public static function storeId($value, $id) {
         static::$all[$id] = $value;
+        return $id;
     }
 
     /**
@@ -79,25 +80,27 @@ class Main
         // if is the same object, extract value and store it
         if (is_object($value) && get_class($value) == get_called_class()) {
             $id = $value->id;            
-            $value = $value->get();
-        }
+        } 
 
         $var = $this->className($var);
+        
 
-        // put val in single var
-        // if multiple, tranform into array
-        var_dump($this->id, $value);
-        
-        if (isset($this->$var) && !is_array($this->$var)) {
-            $this->{$var} = [$this->$var, $value];
-        } else if (isset($this->$var) && is_array($this->$var)) {
-            $this->{$var}[] = $value;
+        if (is_object($value)) {
+            // $this->{$var} = $value->id;
+            if (isset($this->$var) && !is_array($this->$var)) {
+                $this->{$var} = [$this->$var, $value->id];
+            } else if (isset($this->$var) && is_array($this->$var)) {
+                $this->{$var}[] = $value->id;
+            } else {
+                $this->{$var} = $value->id;
+            }
         } else {
-            $this->{$var} = $value;
+            $this->value = $value;
         }
-        Static::storeId($value, $this->id);
-        var_dump($this->id, $value);
+
+
         
+        Static::storeId($this, $this->id);        
 
         return $this;
     }
@@ -124,13 +127,20 @@ class Main
      */
     public function get ($var = null)
     {
-        $var = $this->className($var);
 
+        
         if (isset($this->{$var})) {
-            return $this->{$var};
-        } else {
-            return null;
-        }
+            if (is_array($this->{$var})) {
+                
+                return array_filter(Main::$all, function ($object) use ($var) {
+                    return isset(array_flip($this->{$var})[$object->id]);
+                });
+            } 
+            return static::$all[$this->$var];
+        } else if (isset($this->value)) {
+            return $this->value;
+        } 
+        return null;
     }
 
     /**
@@ -147,11 +157,12 @@ class Main
      * call the right class
      * @param  string $class Class
      * @param  string $var   stored name
-     * @param  mixed $param params
+     * @param  mixed  $param params
      * @return mixed
      */
     private function call ($class, $var, $param = null)
     {
+        
         if ($param == null && $param != 0) {
             return $this->get($var);
         }
@@ -159,9 +170,9 @@ class Main
         if (is_object($param)) {
             $Obj = $param;
         } else if (class_exists($class)) {
-            $Obj = new $class ($param);
+            $Obj = (new $class())->set($param);
         } else {
-            $Obj = new Self ($param);
+            $Obj = (new Self())->set($param);
         }
 
         return $this->set($Obj, $var);
@@ -178,8 +189,15 @@ class Main
         if ($param == null) {
             return $this->get($var);
         }
+        if (is_a($param, 'Date')) {
+            $date = $param;
+        } else {
+            $date = new Date($param);
+        }
 
-        return $this->call('Date', $var, $param);
+        
+
+        return $this->set($date, $var);
     }
 
     /**
@@ -226,7 +244,7 @@ class Main
         });
         if (!$return) {
             throw new Exception('No ' . $object);
-        }
+         }
 
         return $return;
     }
@@ -239,9 +257,9 @@ class Main
     public function getLast($object = 'user')
     {
         if (is_array($this->{$object})) {
-            return end($this->{$object});
+            return Main::$all[end($this->{$object})];
         }
-        return $this->{$object};
+        return Main::$all[$this->{$object}];
     }
 
     /**

@@ -27,8 +27,8 @@ class Interval extends Main
      */
     public function month()
     {
-        $start = !isset($this->start) ? new Date () : clone $this->start;
-        $end   = !isset($this->end) ? new Date () : clone $this->end;
+        $start = !isset($this->start) ? new Date () : clone static::$all[$this->start];
+        $end   = !isset($this->end) ? new Date () : clone static::$all[$this->end];
 
         $date  = $start->diff($end);
         $total = $date->format('%r%m') + $date->format('%r%y') * 12;
@@ -42,8 +42,8 @@ class Interval extends Main
      */
     public function days()
     {
-        $start = !isset($this->start) ? new Date () : clone $this->start;
-        $end   = !isset($this->end) ? new Date () : clone $this->end;
+        $start = !isset($this->start) ? new Date () : clone static::$all[$this->start];
+        $end   = !isset($this->end) ? new Date () : clone static::$all[$this->end];
 
         if ($start > $end) {
             return 0;

@@ -27,14 +27,24 @@ class serviceModel
         // get options
         $Service->createOptions($options);
 
+        
+        
+
         // add all users
         $Service->createUser($user);
 
         // add all tarif
         $Service->createTarif($tarif);
-
+        
         // generate bills
         $Service->createBills();
+
+        echo '<pre>';
+        print_r(Main::$all);
+        echo '</pre>';
+        die;
+        
+        
 
         return $Service;
     }

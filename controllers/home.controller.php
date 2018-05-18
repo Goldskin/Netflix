@@ -26,7 +26,7 @@ class HomeController extends Controller
 
                 $current['name']    = is_null($User->name())     ? ''  : $User->name()->get();
                 $current['id']      = is_null($User->id())       ? ''  : $User->id();
-                $current['url']     = is_null($User->id()) ? '#' : URL . '/user/' . $User->id();
+                $current['url']     = is_null($User->id) ? '#' : URL . '/user/' . $User->id;
 
                 $current['billed']  = [
                     'value' => is_null($User->getBills()) ? ''  : $User->getBills()->format(),

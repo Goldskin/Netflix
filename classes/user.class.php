@@ -10,7 +10,8 @@ class User extends Main
     public function getPayments()
     {
         $payements = $this->getTotals($this->payment());
-        return $payements > 0 ? new Price ($payements) : 0;
+        $returnPrice = $payements > 0 ? $payements : 0;
+        return (new Price ())->set($returnPrice);
     }
 
     /**
@@ -20,7 +21,8 @@ class User extends Main
     public function getBills()
     {
         $bills = $this->getTotals($this->bill());
-        return $bills > 0 ? new Price ($bills) : 0;
+        $returnPrice = $bills > 0 ? $bills : 0;
+        return (new Price ())->set($returnPrice);
     }
 
     /**
@@ -30,7 +32,8 @@ class User extends Main
     public function getAdvanced()
     {
         $adv = $this->getTotals($this->advanced());
-        return $adv > 0 ? new Price ($adv) : 0;
+        $returnPrice = $adv > 0 ? $adv : 0;
+        return (new Price ())->set($returnPrice);
     }
 
     /**
@@ -89,7 +92,7 @@ class User extends Main
 
             if ($payements > $bills) {
                 $status = Price::advance;
-            } else if ($this->getLast('bill') && $bills - $payements >= $this->getLast('bill')->get()){
+            } else if ($this->getLast('detail') && $bills - $payements >= $this->getLast('detail')->get()){
                 $status = Price::unpayed;
             } else if ($payements != $bills) {
                 $status = Price::paying;
@@ -104,7 +107,7 @@ class User extends Main
             $unpayed = $unpayed > 0 ? $unpayed : 0;
 
             if ($unpayed > 0) {
-                if ($unpayed > $this->getLast('bill')->get()) {
+                if ($unpayed > $this->getLast('detail')->get()) {
                     $status = Price::unpayed;
                 } else {
                     $status = Price::paying;
