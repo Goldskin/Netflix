@@ -27,9 +27,6 @@ class serviceModel
         // get options
         $Service->createOptions($options);
 
-        
-        
-
         // add all users
         $Service->createUser($user);
 
@@ -38,13 +35,6 @@ class serviceModel
         
         // generate bills
         $Service->createBills();
-
-        echo '<pre>';
-        print_r(Main::$all);
-        echo '</pre>';
-        die;
-        
-        
 
         return $Service;
     }
