@@ -232,12 +232,7 @@ class Main
         if (!$id) {
             throw new Exception('No id');
         }
-        Self::each($this->{$object}(), function ($Object) use (&$return, $id) {
-            if ($Object->id() == $id) {
-                $return = $Object;
-                return;
-            }
-        });
+        $return = static::$all[$id];
         if (!$return) {
             throw new Exception('No ' . $object);
          }
