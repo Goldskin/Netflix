@@ -174,16 +174,15 @@ class Service extends Main
      */
     public static function applyStatus($User, $price)
     {
-        // if user is admin, he's always paying
+        // if user is admin, he's always paying      
         if ($User->admin()) {
             $return = Price::payed;
         }
-
         // if user all ready payed, check the current statement of payment
         else if ($User->getAdvanced()) {
             if ($User->getAdvanced()->total() > 0 && $price > $User->getAdvanced()->total()) {
                 $return = Price::paying;
-            } else if ($User->getAdvanced()->total() < 0 ) {
+            } else if ($User->getAdvanced()->total() <= 0 ) {
                 $return = Price::unpayed;
             } else {
                 $return = Price::payed;

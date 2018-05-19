@@ -66,8 +66,6 @@ class UserController extends Controller
         // get all bills
         Main::each($User->invoice(), function ($invoice) use (&$invoices, &$lines)
         {
-
-            var_dump($invoice->status()->get());
             $lines[] = [
                 'price' => [
                     'value' => $invoice->format(),
@@ -79,7 +77,7 @@ class UserController extends Controller
             $invoices['total']->set($invoice);
         });
         
-
+        
         // return array ti have lastest bills
         $invoices['line'] = array_reverse($lines);
 
