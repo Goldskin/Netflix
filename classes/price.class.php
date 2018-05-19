@@ -47,7 +47,7 @@ class Price extends Main
     public function total($var = null)
     {
         $total = 0;
-        
+
         $val = $this->get($var);
         
         while(is_object($val)) {
@@ -69,7 +69,7 @@ class Price extends Main
      */
     public function format($currency = '&euro;')
     {
-        $price = Self::toFloat($this->total());
+        $price = Self::toFloat($this->total('price'));
         return number_format($price, 2 , ",", " ") . '&nbsp;' . $currency;
     }
 
