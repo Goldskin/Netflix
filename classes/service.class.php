@@ -146,7 +146,7 @@ class Service extends Main
         // applying bills
         foreach ($Users as $key => $User) {
             $invoice = (new Price ())->set($payments[$this->rotation])->date($Date)->user($User);
-            $invoice->status($this->applyStatus($User, $payments[$this->rotation]));
+            $invoice->status(self::applyStatus($User, $payments[$this->rotation]));
             $bill->invoice($invoice);
             $User->invoice($invoice);
 
@@ -172,7 +172,7 @@ class Service extends Main
      * @param  int $price  Price to sub
      * @return int         status
      */
-    public function applyStatus($User, $price)
+    public static function applyStatus($User, $price)
     {
         // if user is admin, he's always paying
         if ($User->admin()) {
