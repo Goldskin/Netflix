@@ -5,12 +5,10 @@ require_once CONTROLLERS_ROOT . 'all.php';
 class UserController extends Controller
 {
 
-    public function index ($userId = 0) {
+    public function index ($id = 0) {
         $ServiceModel = (new serviceModel ())->getModel();
 
-        $userId = intval($userId);
-
-        $User = $ServiceModel->getId(intval($userId));
+        $User = $ServiceModel->getId($id);
 
         $views = [];
 

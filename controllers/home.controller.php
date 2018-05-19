@@ -7,13 +7,13 @@ class HomeController extends Controller
 
     public function index ($userId = 0) {
         $ServiceModel = (new serviceModel ())->getModel();
-        // echo '<pre>', var_export((Main::$all)), '</pre>';
         $views = [];
         $views['users']  = [];
         $views['billed']  = new Price ();
         $views['payed']   = new Price ();
         $views['unpayed'] = new Price ();
         $views['advance'] = new Price ();
+        
         $views['titles']['page'] = (is_null($ServiceModel->options()->name())
             ? 'Repartition'
             : $ServiceModel->options()->name()->get()) . ' - Accueil';

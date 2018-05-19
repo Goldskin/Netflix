@@ -9,6 +9,11 @@ class BillController extends Controller
         $ServiceModel = (new serviceModel ())->getModel();
 
         $bill = $ServiceModel->getId($id);
+
+        // TODO
+        if (!is_a($bill, 'Price')) {
+            throw Exception('Pas de facture');
+        }
         $Date = $bill->date();
         $invoices = $bill->invoice();
         $lines = [];
