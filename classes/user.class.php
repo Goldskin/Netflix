@@ -18,7 +18,7 @@ class User extends Main
      * get all the bills
      * @return int|float
      */
-    public function getBills()
+    public function getInvoices()
     {
         $bills = $this->getTotals('invoice');
 
@@ -30,9 +30,9 @@ class User extends Main
      * get all the bills
      * @return int|float
      */
-    public function getAdvanced()
+    public function getAdvances()
     {
-        $adv = $this->getTotals('advanced');
+        $adv = $this->getTotals('advances');
         $returnPrice = $adv > 0 ? $adv : 0;
         return (new Price ())->set($returnPrice);
     }
@@ -84,11 +84,11 @@ class User extends Main
     public function update()
     {
         if ($this->admin()) {
-            $this->payed( (new Price ())->set( $this->getBills()->get() )->status(Price::payed) );
+            $this->payed( (new Price ())->set( $this->getInvoices()->get() )->status(Price::payed) );
         } else if ($this->payment()) {
 
             $payements = $this->getPayments()->get();
-            $bills     = $this->getBills()->get();
+            $bills     = $this->getInvoices()->get();
 
             if ($payements > $bills) {
                 $status = Price::advance;
@@ -119,8 +119,8 @@ class User extends Main
                 $this->advance( (new Price ())->set($avance)->status(Price::advance) );
             }
 
-        } else if ($this->getBills()) {
-            $this->unpayed( (new Price ())->set($this->getBills()->get())->status(Price::unpayed) );
+        } else if ($this->getInvoices()) {
+            $this->unpayed( (new Price ())->set($this->getInvoices()->get())->status(Price::unpayed) );
         }
 
         return $this;

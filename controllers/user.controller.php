@@ -15,7 +15,7 @@ class UserController extends Controller
         $views = [];
 
         $views['user']['billed']  = [
-            'value' => is_null($User->getBills()) ? '': $User->getBills()->format(),
+            'value' => is_null($User->getInvoices()) ? '': $User->getInvoices()->format(),
             'class' => ''
         ];
 
@@ -56,31 +56,35 @@ class UserController extends Controller
      * @return void
      */
     protected function history ($User) {
-        $bills = [
-            'line'=> [],
-            'total'=> new Price (),
+        $invoices = [
+            'line'  => [],
+            'total' => new Price (),
         ];
 
         $lines = [];
+
         // get all bills
-        Main::each($User->bill(), function ($Bill) use (&$bills, &$lines)
+        Main::each($User->invoice(), function ($invoice) use (&$invoices, &$lines)
         {
+
+            var_dump($invoice->status()->get());
             $lines[] = [
                 'price' => [
-                    'value' => $Bill->format(),
-                    'class' => Price::getStatus($Bill->status()->get()),
+                    'value' => $invoice->format(),
+                    'class' => Price::getStatus($invoice->status()->get()),
                 ],
-                'date' => $Bill->date()->format('d/m/Y'),
-                'url' => URL . '/bill/' . $Bill->date()->format('Ymd')
+                'date' => $invoice->date()->format('d/m/Y'),
+                'url'  => URL . '/bill/' . $invoice->date()->format('Ymd')
             ];
-            $bills['total']->set($Bill);
+            $invoices['total']->set($invoice);
         });
+        
 
         // return array ti have lastest bills
-        $bills['line'] = array_reverse($lines);
+        $invoices['line'] = array_reverse($lines);
 
-        $bills['total'] = $bills['total']->get() == 0 ? '' : $bills['total']->format();
-        $views['bills'] = $bills;
+        $invoices['total'] = $invoices['total']->get() == 0 ? '' : $invoices['total']->format();
+        $views['invoices'] = $invoices;
         $this
             ->set($views)
             ->add('history');

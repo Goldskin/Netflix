@@ -28,7 +28,7 @@ class HomeController extends Controller
                 $current['url']     = is_null($User->id) ? '#' : URL . '/user/' . $User->id;
 
                 $current['billed']  = [
-                    'value' => is_null($User->getBills()) ? ''  : $User->getBills()->format(),
+                    'value' => is_null($User->getInvoices()) ? ''  : $User->getInvoices()->format(),
                     'class' => ''
                 ];
 
@@ -51,27 +51,27 @@ class HomeController extends Controller
 
 
                 // add to totals
-                if (!is_null($User->getBills())) {
-                    $views['billed'] ->set($User->getBills());
+                if (!is_null($User->getInvoices())) {
+                    $views['billed']->price($User->getInvoices());
                 }
 
                 if (!is_null($User->payed())) {
-                    $views['payed']->set($User->payed());
+                    $views['payed']->price($User->payed());
                 }
 
                 if (!is_null($User->unpayed())) {
-                    $views['unpayed']->set($User->unpayed());
+                    $views['unpayed']->price($User->unpayed());
                 }
 
                 if (!is_null($User->advance())) {
-                    $views['advance']->set($User->advance());
+                    $views['advance']->price($User->advance());
                 }
             }
         });
 
         $tarif  = $ServiceModel->getActiveTarif()->total();
-        $payed  = $views['payed']->total();
-        $billed = $views['billed']->total();
+        $payed  = $views['payed']->total('price');
+        $billed = $views['billed']->total('price');
         $diff   = $billed - $payed;
 
         if ($diff < 0) {
@@ -86,6 +86,7 @@ class HomeController extends Controller
             $class = Price::getStatus(Price::payed);
         }
 
+
         $views['billed']  = [
             'value' => $billed == 0 ? '' : $views['billed'] ->format(),
             'class' => ''
@@ -97,12 +98,12 @@ class HomeController extends Controller
         ];
 
         $views['unpayed'] = [
-            'value' => $views['unpayed']->total() == 0 ? '' : $views['unpayed']->format(),
-            'class' => $views['unpayed']->total() > $tarif ? Price::getStatus(Price::unpayed) : Price::getStatus(Price::paying)
+            'value' => $views['unpayed']->total('price') == 0 ? '' : $views['unpayed']->format(),
+            'class' => $views['unpayed']->total('price') > $tarif ? Price::getStatus(Price::unpayed) : Price::getStatus(Price::paying)
         ];
 
         $views['advance'] = [
-            'value' => $views['advance']->total() == 0 ? '' : $views['advance']->format(),
+            'value' => $views['advance']->total('price') == 0 ? '' : $views['advance']->format(),
             'class' => Price::getStatus(Price::advance)
         ];
 
