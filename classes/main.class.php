@@ -218,8 +218,8 @@ class Main
             }
         }
     }
-
-    /**
+        
+        /**
      * get object id based on name
      * @param  string $name name
      * @return User
@@ -255,7 +255,6 @@ class Main
      * @param  string $object
      * @return object
      */
-
     public function getFirst($object = 'user') {
         if (is_array($this->{$object})) {
             return $this->{$object}[0];
