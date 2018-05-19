@@ -30,9 +30,9 @@ class User extends Main
      * get all the bills
      * @return int|float
      */
-    public function getAdvanced()
+    public function getAdvances()
     {
-        $adv = $this->getTotals('advanced');
+        $adv = $this->getTotals('advances');
         $returnPrice = $adv > 0 ? $adv : 0;
         return (new Price ())->set($returnPrice);
     }

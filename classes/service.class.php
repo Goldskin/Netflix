@@ -179,15 +179,15 @@ class Service extends Main
             $return = Price::payed;
         }
         // if user all ready payed, check the current statement of payment
-        else if ($User->getAdvanced()) {
-            if ($User->getAdvanced()->total() > 0 && $price > $User->getAdvanced()->total()) {
+        else if ($User->getAdvances()) {
+            if ($User->getAdvances()->total() > 0 && $price > $User->getAdvances()->total()) {
                 $return = Price::paying;
-            } else if ($User->getAdvanced()->total() <= 0 ) {
+            } else if ($User->getAdvances()->total() <= 0 ) {
                 $return = Price::unpayed;
             } else {
                 $return = Price::payed;
             }
-            $User->advanced( (new Price ())->set(-$price) );
+            $User->advances( (new Price ())->set(-$price) );
         }
 
         // if user is actif but hasn't payed yet
@@ -258,7 +258,7 @@ class Service extends Main
                 foreach ($Data->payed as $Payment) {
                     $User->payment( (new Price ())->set( Price::toInt($Payment->price) )->date( $Payment->date ) );
                 }
-                $User->advanced( (new Price ())->set($User->payment()->total()) );
+                $User->advances( (new Price ())->set($User->payment()->total()) );
             }
 
             // add user
