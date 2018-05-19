@@ -114,7 +114,7 @@ class Service extends Main
             $payments = $currentTarif->split($totalUser);
 
             // apply all bills
-            $this->applyBill($Users, $payments, $Date);
+            $this->applyInvoice($Users, $payments, $Date);
 
         }
         
@@ -130,7 +130,7 @@ class Service extends Main
      * @return object
      */
 
-    protected function applyBill($Users, $payments, $Date)
+    protected function applyInvoice($Users, $payments, $Date)
     {
         $totalUser  = count($Users);
 
@@ -139,15 +139,16 @@ class Service extends Main
             return $payment != $payments[0];
         }));
 
-        $bill = (new Price ());
+        $bill = (new Price ())
+            ->set(array_sum($payments))
+            ->date($Date);
 
         // applying bills
         foreach ($Users as $key => $User) {
-
-            $detail = (new Price ())->set($payments[$this->rotation])->date($Date)->user($User);
-            $detail->status($this->applyStatus($User, $payments[$this->rotation]));
-            $bill->detail($detail);
-            $User->detail($detail);
+            $invoice = (new Price ())->set($payments[$this->rotation])->date($Date)->user($User);
+            $invoice->status($this->applyStatus($User, $payments[$this->rotation]));
+            $bill->invoice($invoice);
+            $User->invoice($invoice);
 
             $this->rotation++;
             if ($this->rotation == $totalUser ) {
@@ -155,13 +156,11 @@ class Service extends Main
             }
         }
 
-        $bill->set(array_sum($payments));
-
         // set for next rotation the number
         if ($this->rotation + $number < $totalUser) {
             $this->rotation += $number;
         } else {
-            $this->rotation = $number - ( ($totalUser) - $this->rotation);
+            $this->rotation = $number - (($totalUser) - $this->rotation);
         }
 
         return $this;

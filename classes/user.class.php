@@ -9,7 +9,7 @@ class User extends Main
      */
     public function getPayments()
     {
-        $payements = $this->getTotals($this->payment());
+        $payements = $this->getTotals('payment');
         $returnPrice = $payements > 0 ? $payements : 0;
         return (new Price ())->set($returnPrice);
     }
@@ -20,7 +20,8 @@ class User extends Main
      */
     public function getBills()
     {
-        $bills = $this->getTotals($this->bill());
+        $bills = $this->getTotals('invoice');
+
         $returnPrice = $bills > 0 ? $bills : 0;
         return (new Price ())->set($returnPrice);
     }
@@ -31,7 +32,7 @@ class User extends Main
      */
     public function getAdvanced()
     {
-        $adv = $this->getTotals($this->advanced());
+        $adv = $this->getTotals('advanced');
         $returnPrice = $adv > 0 ? $adv : 0;
         return (new Price ())->set($returnPrice);
     }
@@ -63,18 +64,17 @@ class User extends Main
 
     /**
      * get all prices
-     * @param  object $Objs
+     * @param  string $var
      * @return int|mixed price
      */
-    public function getTotals($Objs)
+    public function getTotals($var)
     {
         $Prices = new Price();
-
-        Self::each($Objs, function ($Obj) use (&$Prices) {
-            $Prices->set($Obj->get());
+        Self::each($this->{$var}(), function ($Obj) use (&$Prices, $var) {
+            $Prices->{$var}($Obj);
         });
 
-        return $Prices->total();
+        return $Prices->total($var);
     }
 
     /**
@@ -92,7 +92,7 @@ class User extends Main
 
             if ($payements > $bills) {
                 $status = Price::advance;
-            } else if ($this->getLast('detail') && $bills - $payements >= $this->getLast('detail')->get()){
+            } else if ($this->getLast('invoice') && $bills - $payements >= $this->getLast('invoice')->get()){
                 $status = Price::unpayed;
             } else if ($payements != $bills) {
                 $status = Price::paying;
@@ -107,7 +107,7 @@ class User extends Main
             $unpayed = $unpayed > 0 ? $unpayed : 0;
 
             if ($unpayed > 0) {
-                if ($unpayed > $this->getLast('detail')->get()) {
+                if ($unpayed > $this->getLast('invoice')->get()) {
                     $status = Price::unpayed;
                 } else {
                     $status = Price::paying;

@@ -36,6 +36,9 @@ class serviceModel
         // generate bills
         $Service->createBills();
 
+        echo '<pre>';
+        print_r(Main::$all);
+        echo '</pre>';
         return $Service;
     }
 

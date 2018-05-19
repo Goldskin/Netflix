@@ -20,7 +20,6 @@ class HomeController extends Controller
 
         $ServiceModel::each($ServiceModel->user(), function ($User) use (&$views)
         {
-
             if (!is_null($User->payed()) || !is_null($User->unpayed()) || !is_null($User->advance())) {
                 $current = [];
 

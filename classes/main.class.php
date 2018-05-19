@@ -23,9 +23,7 @@ class Main
     {
         $this->setId();
         
-        // if($param != null && !is_object($param)) {
-        //     $this->set($param);
-        // }
+        ksort(static::$all);
     }
 
     private function setId () {
@@ -127,11 +125,8 @@ class Main
      */
     public function get ($var = null)
     {
-
-        
         if (isset($this->{$var})) {
             if (is_array($this->{$var})) {
-                
                 return array_filter(Main::$all, function ($object) use ($var) {
                     return isset(array_flip($this->{$var})[$object->id]);
                 });
@@ -139,7 +134,8 @@ class Main
             return static::$all[$this->$var];
         } else if (isset($this->value)) {
             return $this->value;
-        } 
+        }
+
         return null;
     }
 

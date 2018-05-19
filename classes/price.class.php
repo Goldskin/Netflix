@@ -44,11 +44,20 @@ class Price extends Main
      * add to current price
      * @return mixed
      */
-    public function total()
+    public function total($var = null)
     {
-        $val = $this->get();
+        $total = 0;
+        
+        $val = $this->get($var);
+        
+        while(is_object($val)) {
+            $val = $val->get($var);
+        }
         if (is_array($val)) {
-            return array_sum($val);
+            foreach($val as $price) {
+                $total += $price->get(); 
+            }
+            return $total;
         }
         return $val;
     }
