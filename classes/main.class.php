@@ -225,10 +225,7 @@ class Main
      * @return User
      */
     public function getId($id, $object = 'user')
-    {
-        $return = null;
-
-
+    {        
         if (!$id) {
             throw new Exception('No id');
         }

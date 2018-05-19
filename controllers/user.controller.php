@@ -72,7 +72,7 @@ class UserController extends Controller
                     'class' => Price::getStatus($invoice->status()->get()),
                 ],
                 'date' => $invoice->date()->format('d/m/Y'),
-                'url'  => URL . '/bill/' . $invoice->date()->format('Ymd')
+                'url'  => URL . '/bill/' . $invoice->bill()->id
             ];
             $invoices['total']->set($invoice);
         });

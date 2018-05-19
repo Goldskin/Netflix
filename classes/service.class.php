@@ -147,6 +147,7 @@ class Service extends Main
         foreach ($Users as $key => $User) {
             $invoice = (new Price ())->set($payments[$this->rotation])->date($Date)->user($User);
             $invoice->status(self::applyStatus($User, $payments[$this->rotation]));
+            $invoice->bill($bill);
             $bill->invoice($invoice);
             $User->invoice($invoice);
 

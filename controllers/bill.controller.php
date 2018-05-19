@@ -4,45 +4,27 @@ require_once MODELS_ROOT . 'service.model.php';
 require_once CONTROLLERS_ROOT . 'all.php';
 class BillController extends Controller
 {
-    public function index ($date = null)
+    public function index ($id = null)
     {
         $ServiceModel = (new serviceModel ())->getModel();
 
-        $Date = new Date ($date);
+        $bill = $ServiceModel->getId($id);
+        $Date = $bill->date();
+        $invoices = $bill->invoice();
+        $lines = [];
 
-        $Users = $ServiceModel->getActiveUsers($Date);
-        $Bills = [];
-        $total = new Price ();
+        foreach ($invoices as $invoice) {
 
-        $allReadyDisplayed = [];
+            $User = $invoice->user();
 
-        foreach ($Users as $User) {
-
-            $Bill = $User->getBill($Date);
-
-            // bug if multi line for the same user
-            if (is_array($Bill)) {
-                while (count($Bill)) {
-                    if (array_search($Bill[0]->id(), $allReadyDisplayed) !== false) {
-                        array_shift($Bill);
-                    } else {
-                        $allReadyDisplayed[] = $Bill[0]->id();
-                        $Bill = $Bill[0];
-                        break;
-                    }
-                }
-            }
-
-            $Bills[] = [
+            $lines[] = [
                 'user'  => $User->name()->get(),
                 'price' => [
-                    'value' => $Bill->format(),
-                    'class' => Price::getStatus($Bill->status()->get())
+                    'value' => $invoice->format(),
+                    'class' => Price::getStatus($invoice->status()->get())
                 ],
-                'url'   => (is_null($User->id()) ? '#' : URL . '/user/' . $User->id())
+                'url'   => (is_null($User->id) ? '#' : URL . '/user/' . $User->id)
             ];
-
-            $total->set($Bill);
         }
 
         $views = [
@@ -52,8 +34,8 @@ class BillController extends Controller
                     : $ServiceModel->options()->name()->get()) . ' - Facture du ' . $Date->format('d/m/Y'),
                 'header1' => 'Facture du ' . $Date->format('d/m/Y') ,
             ],
-            'lines' => $Bills,
-            'total' => $total->format()
+            'lines' => $lines,
+            'total' => $bill->format()
         ];
 
         $views['options'] = getHeader($ServiceModel);
