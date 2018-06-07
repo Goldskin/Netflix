@@ -79,7 +79,7 @@ class UserController extends Controller
         // return array ti have lastest bills
         $invoices['line'] = array_reverse($lines);
 
-        $invoices['total'] = $invoices['total']->get() == 0 ? '' : $invoices['total']->format();
+        $invoices['total'] = $invoices['total']->get('price') == 0 ? '' : $invoices['total']->format();
         $views['invoices'] = $invoices;
         $this
             ->set($views)
