@@ -219,7 +219,7 @@ class Main
         }
     }
         
-        /**
+    /**
      * get object id based on name
      * @param  string $name name
      * @return User
@@ -235,8 +235,12 @@ class Main
         return static::$all[$id];
     }
 
-    public function getMultipleIds ($ids) {
-
+    /**
+     * get multiple object with ids
+     * @param array $ids all the ids needed
+     */
+    public function getMultipleIds ($ids = []) 
+    {
         if (count($ids) === 1) {
             return $this->getId(array_shift($ids));
         }
