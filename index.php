@@ -15,9 +15,9 @@ define('ROUTE',            ROOT . 'route/');
 require VENDOR_ROOT . 'autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->get(CORRECT_PATH . '/all.json', 'get_all_users_handler');
+    $r->get(CORRECT_PATH . '/all', 'all');
     // {id} must be a number (\d+)
-    $r->get('GET', CORRECT_PATH . '/id/{id:\d+}', 'get_user_handler');
+    $r->get(CORRECT_PATH . '/id/{id:.+}', 'id');
     // The /{title} suffix is optional
     $r->addRoute('GET', CORRECT_PATH . '/articles/{id:\d+}[/{title}]', 'get_article_handler');
 });
@@ -26,8 +26,6 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
 
-var_dump(CORRECT_PATH, $httpMethod, $uri);
-
 // Strip query string (?foo=bar) and decode URI
 if (false !== $pos = strpos($uri, '?')) {
     $uri = substr($uri, 0, $pos);
@@ -35,6 +33,7 @@ if (false !== $pos = strpos($uri, '?')) {
 $uri = rawurldecode($uri);
 
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
         echo 'not found';
@@ -48,7 +47,7 @@ switch ($routeInfo[0]) {
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
 
-        var_dump($handler, $vars);
+        require CONTROLLERS_ROOT . $handler . '.php';
         // ... call $handler with $vars
         break;
 }

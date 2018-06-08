@@ -224,17 +224,28 @@ class Main
      * @param  string $name name
      * @return User
      */
-    public function getId($id, $object = 'user')
+    public function getId($id)
     {        
         if (!$id) {
             throw new Exception('No id');
+        } else if (!isset(static::$all[$id])) {
+            throw new Exception('No match');
         }
-        $return = static::$all[$id];
-        if (!$return) {
-            throw new Exception('No ' . $object);
-         }
 
-        return $return;
+        return static::$all[$id];
+    }
+
+    public function getMultipleIds ($ids) {
+
+        if (count($ids) === 1) {
+            return $this->getId(array_shift($ids));
+        }
+
+        $returnValue = [];
+        foreach ($ids as $id) {
+            $returnValue[] = $this->getId($id);
+        }
+        return $returnValue;
     }
 
     /**
