@@ -175,6 +175,9 @@ class Service extends Main
      */
     public static function applyStatus($User, $price)
     {
+
+        var_dump($User->total('advances') );
+
         // if user is admin, he's always paying      
         if ($User->admin()) {
             $return = Price::payed;
@@ -257,9 +260,10 @@ class Service extends Main
             // add all payments
             if (isset($Data->payed)) {
                 foreach ($Data->payed as $Payment) {
-                    $User->payment( (new Price ())->set( Price::toInt($Payment->price) )->date( $Payment->date ) );
+                    $User->payment( (new Price())->set( Price::toInt($Payment->price) )->date( $Payment->date ) );
                 }
-                $User->advances( (new Price ())->set($User->payment()->total()) );
+                $advances = (new Price())->set($User->total('payment'));
+                $User->advances($advances);
             }
 
             // add user
