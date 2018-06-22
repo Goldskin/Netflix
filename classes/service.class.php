@@ -175,15 +175,16 @@ class Service extends Main
      */
     public static function applyStatus($User, $price)
     {
+
         // if user is admin, he's always paying      
         if ($User->admin()) {
             $return = Price::payed;
         }
         // if user all ready payed, check the current statement of payment
         else if ($User->getAdvances()) {
-            if ($User->getAdvances()->total() > 0 && $price > $User->getAdvances()->total()) {
+            if ($User->getAdvances()->total('price') > 0 && $price > $User->getAdvances()->total('price')) {
                 $return = Price::paying;
-            } else if ($User->getAdvances()->total() <= 0 ) {
+            } else if ($User->getAdvances()->total('price') <= 0 ) {
                 $return = Price::unpayed;
             } else {
                 $return = Price::payed;
@@ -257,9 +258,10 @@ class Service extends Main
             // add all payments
             if (isset($Data->payed)) {
                 foreach ($Data->payed as $Payment) {
-                    $User->payment( (new Price ())->set( Price::toInt($Payment->price) )->date( $Payment->date ) );
+                    $User->payment( (new Price())->set( Price::toInt($Payment->price) )->date( $Payment->date ) );
                 }
-                $User->advances( (new Price ())->set($User->payment()->total()) );
+                $advances = (new Price())->set($User->getPayments()->total());
+                $User->advances($advances);
             }
 
             // add user
