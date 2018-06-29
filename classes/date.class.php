@@ -3,7 +3,7 @@
 class Date extends DateTime
 {
     public $id;
-    public $type = 'date';
+    public $type = 'Date';
 
     function __construct($time = "now", $timezone = null) {
         $this->id = Main::storeId($this, Main::newId());
