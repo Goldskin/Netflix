@@ -18,10 +18,20 @@ class Main
 
     public static $counter = 0;
     public static $all = [];
+    public $id;
+    public $type;
 
-    function __construct()
+    function __construct($type = null)
     {
+        // set the uniq id
         $this->setId();
+        
+        // set the type
+        if (is_null($type)) {
+            $this->type = get_called_class();
+        } else {
+            $this->type = $type;
+        }
         
         ksort(static::$all);
     }
@@ -166,9 +176,9 @@ class Main
         if (is_object($param)) {
             $Obj = $param;
         } else if (class_exists($class)) {
-            $Obj = (new $class())->set($param);
+            $Obj = (new $class($class))->set($param);
         } else {
-            $Obj = (new Self())->set($param);
+            $Obj = (new Self($class))->set($param);
         }
 
         return $this->set($Obj, $var);
