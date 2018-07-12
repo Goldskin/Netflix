@@ -9,4 +9,6 @@ $test = preg_match_all($regex, $vars['id'], $match);
 
 
 $item = $ServiceModel->getMultipleIds($match[1]);
+
+header('Content-Type: application/json');
 echo json_encode($item);
